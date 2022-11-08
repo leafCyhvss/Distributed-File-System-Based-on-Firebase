@@ -1,0 +1,19 @@
+,engineSize,fuelType,mileage,model,mpg,price,tax,transmission,year
+0,1.0,Petrol,15944, Fiesta,57.7,12000,150,Automatic,2017
+1,1.0,Petrol,9083, Focus,57.7,14000,150,Manual,2018
+2,1.0,Petrol,12456, Focus,57.7,13000,150,Manual,2017
+3,1.5,Petrol,10460, Fiesta,40.3,17500,145,Manual,2019
+4,1.0,Petrol,1482, Fiesta,48.7,16500,145,Automatic,2019
+5,1.6,Petrol,35432, Fiesta,47.9,10500,145,Manual,2015
+6,1.0,Petrol,2029, Puma,50.4,22500,145,Manual,2019
+7,1.2,Petrol,13054, Fiesta,54.3,9000,145,Manual,2017
+8,2.0,Diesel,6894, Kuga,42.2,25500,145,Automatic,2019
+9,1.0,Petrol,48141, Focus,61.4,10000,145,Manual,2018
+10,1.0,Petrol,18803, Fiesta,56.5,11561,145,Manual,2018
+11,1.0,Petrol,12065, EcoSport,54.3,13500,145,Manual,2018
+12,1.0,Petrol,20978, Fiesta,65.7,11000,0,Manual,2017
+13,2.0,Diesel,9002, Kuga,54.3,17999,145,Semi-Auto,2018
+14,1.5,Diesel,8970, Kuga,58.9,18999,145,Semi-Auto,2018
+15,1.5,Diesel,12810, Kuga,64.2,14399,145,Manual,2018
+16,2.0,Diesel,10428, Kuga,38.2,17999,145,Manual,2019
+17,2.0,Diesel,14680, Kuga,54.3,16899,145,Manual,2018
