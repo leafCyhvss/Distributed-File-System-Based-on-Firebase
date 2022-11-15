@@ -6,7 +6,8 @@ import pandas as pd
 
 # -------------------firebase-------------------
 
-url = 'https://ds551-f9b92-default-rtdb.firebaseio.com/'
+# url = 'https://ds551-f9b92-default-rtdb.firebaseio.com/'
+url = 'https://demo01-76e03-default-rtdb.firebaseio.com/'
 fb = firebase.FirebaseApplication(url, None)
 
 
