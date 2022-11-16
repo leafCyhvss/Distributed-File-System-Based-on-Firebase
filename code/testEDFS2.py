@@ -17,12 +17,15 @@ e1 = EDFSURL()
 # e1.get('/test2/23/ford.csv')
 # # e1.remove('/test2/23/ford.csv')
 
-# e1.ls('/')
-# e1.ls('/test2/23/')
+e1.ls('/')
+e1.ls('/test2/23/')
+e1.ls('/test2/24')
+
 # e1.getPartitionLocations('/test2/23/ford.csv')
 # e1.readPartition('/test2/23/ford.csv', 2)
 # e1.readPartition('/test2/23/ford.csv', 10)
 # e1.readPartition('/test2/23', 2)
 
-# e1.remove('c')
+# e1.remove('/test2/23/ford.csv')
 # print('2a' < '2b') 
+

@@ -24,6 +24,8 @@ class EDFSURL():
         dirNames = filePath.split('/')[1:]#这里是为了去除 /user/john/hello.txt 第一个斜杠的影响，mac上不写这个斜杠
         for idx in range(len(dirNames)):
             dir = dirNames[idx]
+            if dir == 'Empty':
+                continue
             existedPaths = requests.get(currPath[:-1] + '.json').json()
             if dir not in existedPaths:
                 # print('ERROR: Wrong Path: ' + currPath.replace(self.rootPath, '/') + dir)
@@ -122,6 +124,11 @@ class EDFSURL():
             newPathURL = self.rootPath[:-1] + filePath + '.json'
         data = requests.get(url= newPathURL).json()
         for name in data.keys():
+            if len(data.keys()) == 1:
+                print("This directory is empty")
+                break
+            if name == 'Empty':
+                continue
             if '__' in name:
                 name = name.replace('__', '.')
             print(filePath + '/' + name)
@@ -192,8 +199,8 @@ class EDFSURL():
                     print('Mkdir ERROR: Directory Already Exists')
                     return
                 else:
-                    dirURL = currPath + dir + '.json'
-                    requests.put(url= dirURL, data= json.dumps('null'))
+                    dirURL = currPath + dir + '/Empty.json'
+                    requests.put(url= dirURL, data= json.dumps('1'))
                     print('Mkdir: Success')
 
 
