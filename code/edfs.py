@@ -6,8 +6,7 @@ import pandas as pd
 
 # -------------------firebase-------------------
 
-# url = 'https://ds551-f9b92-default-rtdb.firebaseio.com/'
-url = 'https://demo01-76e03-default-rtdb.firebaseio.com/'
+url = 'https://ds551-f9b92-default-rtdb.firebaseio.com/'
 fb = firebase.FirebaseApplication(url, None)
 
 
@@ -27,7 +26,7 @@ def readData(file, k):
     try:
         f = open(file, 'r', encoding="utf-8")
     except:
-        print("File does not exist!")
+        print("File does not exist")
         return False
     tem = 1
     r = []
@@ -56,7 +55,7 @@ def readData(file, k):
     # result['data'] = data
     par = {}
     for i in range(1, k + 1):
-        par["p" + str(i)] = "https://demo01-76e03-default-rtdb.firebaseio.com/data/" + file.split(".")[0] + str(
+        par["p" + str(i)] = "https://ds551-f9b92-default-rtdb.firebaseio.com/" + file.split(".")[0] + str(
             i) + ".json"
     result["part"] = par
 
@@ -152,6 +151,7 @@ def mkdir(path, folder):
     a = getData()
     c = a
     s = ''
+    i = ''
     # 路径ok
     if pp['success']:
         for p in pp['data']:
@@ -162,9 +162,12 @@ def mkdir(path, folder):
         if folder in c_key:
             print("LS ERROR:Folder wrong")
             return False
-
-        s = 'a' + s + "['" + folder + "']" + '={"file~":0}'
+        print(s)
+        s = 'a' + s + "['" + folder + "']" + '={"empty":1}'
+        # s = 'a' + s + "['" + folder + "']" + '={"file~":0}'
+        # print(a)
         exec(s)
+        # exec (i)
         fb.put('test2', 'root', a)
         print('mkdir success')
     # # 路径错误
@@ -173,7 +176,8 @@ def mkdir(path, folder):
         return False
 
 
-# mkdir("/user", "ldw")
+# mkdir("/user", "ldw4")
+
 
 def cat(path, fileName):
     if path[-1] != "/":
@@ -269,7 +273,7 @@ def get(path, fileName):
             fg.close()
             return True
         else:
-            print("File does not exist!")
+            print("File does not exist")
             return False
 
 
@@ -316,19 +320,25 @@ def put(path, fileName, k):
 
             # update path
             s = ""
+            c = ""
             pp['data'][-1] = pp['data'][-1].replace(".", "~")
             for p in pp['data']:
                 s = s + '["' + p + '"]'
-
+                if '~' not in p:
+                    c = c + '["' + p + '"]'
             a = getData()
+
             s = 'a' + s + '=' + str(r['part'])
+            c = 'a' + c + '["empty"] = "0"'
+
             exec(s)
+            exec(c)
             fb.put('test2', 'root', a)
             print("Put success")
             return True
 
 
-# print(put("/user/lcj", 'toyota.csv',8))
+# print(put("/user/ldw/", 'cars.csv',2))
 
 
 def readPartition(path, fileName):
@@ -398,17 +408,31 @@ def rm(path, fileName):
                 s = s + '["' + p + '"]'
             a = getData()
             s = "del a" + s
+            print(s)
             exec(s)
             fb.put('test2', 'root', a)
 
             print('rm success')
+            # print(path['data'])
+            if len(ls(path)['data']) == 0:
+
+                pp = analysePath(path)
+                c = ""
+                pp['data'][-1] = pp['data'][-1].replace(".", "~")
+                for p in pp['data']:
+                    if '~' not in p:
+                        c = c + '["' + p + '"]'
+                a = getData()
+                c = 'a' + c + '["empty"] = "1"'
+                exec(c)
+                fb.put('test2', 'root', a)
             return True
         else:
             print("RM ERROR:File Name wrong")
             return False
 
 
-# print(rm("/user/lcj", 'toyota.csv'))
+# print(rm("/user/ldw", 'copytoyota.csv'))
 
 
 def getPartitionLocations(path, fileName, k):
@@ -529,17 +553,17 @@ def cmd(c):
         else:
             return readPartition(c.split(" ")[1], c.split(" ")[2])
 
-
 # print(cmd("readPartition /user/yyy/ toyota.csv "))
 
+
 if __name__ == '__main__':
-    print("welcome to EDFS")
+    print("welcome EDFS~")
     tem = True
     while tem:
         c = input()
         if c == 'exit':
             tem = False
-            print("bey")
+            print("bey~")
         # print(cmd("readPartition /user/yyy/ toyota.csv "))
         if c != 'exit':
             cmd(c)
