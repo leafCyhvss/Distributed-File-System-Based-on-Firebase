@@ -16,14 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-
-from EDFS2 import views
+from EDFS1 import viewsF
+from EDFS2 import viewsS
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path('edfs2/', views.helloworld),
-    path('edfs2/ls-request', views.lsDisplay),
-    path('edfs2/part-request', views.showPartition),
-    path('edfs2/mkdir', views.mkdir),
-    path('edfs2/upload', views.put)
+
+    # EDFS1
+    path('edfs1', viewsF.helloworld),
+
+
+    # EDFS2
+    path('edfs2/', viewsS.helloworld),
+    path('edfs2/ls-request', viewsS.lsDisplay),
+    path('edfs2/part-request', viewsS.showPartition),
+    path('edfs2/mkdir', viewsS.mkdir),
+    path('edfs2/upload', viewsS.put)
 ]
