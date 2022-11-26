@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" name="filepath">
+            <input type="text" name="pnumber">
+            <input type="file" name="filename">
+            <input type="submit" value="submit">
+        </form>
+
+    </div>
+{% endblock %}
