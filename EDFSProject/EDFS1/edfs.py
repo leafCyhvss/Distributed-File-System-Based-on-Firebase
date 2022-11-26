@@ -441,7 +441,7 @@ if __name__ == '__main__':
         c = input()
         if c == 'exit':
             tem = False
-            print("bey~")
+            print("bye~")
         # print(cmd("readPartition /user/yyy/ toyota.csv "))
         if c != 'exit':
             print(cmd(c))

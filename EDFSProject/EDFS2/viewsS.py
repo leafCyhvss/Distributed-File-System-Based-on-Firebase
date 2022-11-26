@@ -78,3 +78,6 @@ def put(request):
         files = edfs.ls(filePath)
         return render(request, 'ls.html', {'queryset': files})
     # 考虑重定向去原来的页面，这样url会变
+
+def analytics(request):
+    return render(request, 'analytics.html')
