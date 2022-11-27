@@ -8,10 +8,10 @@ edfs = EDFSURL()
 def helloworld(request):
     # 获取数据信息
     # edfs = EDFSURL()
-    files = edfs.ls(edfs.currentPath)
-    print('helloworld' +
-        edfs.currentPath)
-    return render(request, 'ls.html', {'queryset': files})
+    # files = edfs.ls(edfs.currentPath)
+    # print('helloworld' +
+    #     edfs.currentPath)
+    return render(request, 'ls.html', {'queryset': ['/']})
 
 def mainView(request):
     return render(request, 'lspost.html')
@@ -98,10 +98,10 @@ def remove(request):
         filePath = '/'.join(filePath)
         print('file path: ', filePath)
         files = edfs.ls(filePath)
-        # return render(request, 'ls.html', {'queryset': files})
-        edfs.currentPath = filePath
-        print('remove: ' + edfs.currentPath)
-        return redirect('/edfs2/')
+        return render(request, 'ls.html', {'queryset': files})
+        # edfs.currentPath = filePath
+        # print('remove: ' + edfs.currentPath)
+        # return redirect('/edfs2/')
 
 
 
