@@ -4,7 +4,7 @@
     <div class="container">
         <div style="margin-bottom: 10px">
             <a class="btn btn-success" href="/edfs2/ls-request">
-                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
                 ls Request
             </a>
             <a class="btn btn-success" href="/edfs2/mkdir">
@@ -16,13 +16,13 @@
                 Upload a File
             </a>
             <a class="btn btn-success" href="/edfs2/remove">
-                <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
                 Remove a File
             </a>
         </div>
         <div style="margin-bottom: 10px">
             <a class="btn btn-success" href="/edfs2/">
-                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
                 Cat a File
             </a>
             <a class="btn btn-success" href="/edfs2/part-request">
@@ -30,53 +30,52 @@
                 Get Partition Locations
             </a>
             <a class="btn btn-success" href="/edfs2/">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                 Read Partition of a File
             </a>
         </div>
-
-    <div>
-</div>
+        <div>
+            <br>
+        </div>
+        <div>
+            <div class="panel-default">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <span class="input-group-addon">GO TO:</span>
+                        <input type="text" class="form-control" placeholder="diretory path" name="title"/>
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-primary">show</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div>
+            <br>
+        </div>
         <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">
-                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                File Paths
-            </div>
-
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                            File Paths:
+{#                            {%   queryset['path'] %}#}
+                        </div>
+{#            <ol class="breadcrumb">#}
+{#                <li><a href="#">Home</a></li>#}
+{#                <li><a href="#">Library</a></li>#}
+{#                <li class="active">Data</li>#}
+{#            </ol>#}
             <!-- Table -->
             <table class="table table-bordered">
-{#                <thead>#}
-{#                <tr>#}
-{#                    <th>FilePaths</th>#}
-{#                    <th>名称</th>#}
-{#                    <th>操作</th>#}
-{#                </tr>#}
-{#                </thead>#}
                 <tbody>
-                {% for obj in queryset %}
+                {% for obj in queryset%}
                     <tr>
-{#                        <th>{{ obj.id }}</th>#}
-                        <td>{{ obj}}</td>
-{#                        <td>#}
-{#                            <a class="btn btn-primary btn-xs" href="/depart/{{ obj.id }}/edit/">编辑</a>#}
-{#                            <a class="btn btn-danger btn-xs" href="/depart/delete/?nid={{ obj.id }}">删除</a>#}
-{#                        </td>#}
+                        <td>{{ obj }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
-        <div class="panel-body">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label>go to</label>
-                        <input type="text" class="form-control" placeholder="diretory path" name="title"/>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">show</button>
-            </form>
         </div>
     </div>
 

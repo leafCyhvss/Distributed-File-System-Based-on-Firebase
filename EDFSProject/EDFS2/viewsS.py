@@ -6,15 +6,20 @@ edfs = EDFSURL()
 
 # Create your views here.
 def helloworld(request):
-    # 获取数据信息
-    # edfs = EDFSURL()
-    files = edfs.ls(edfs.currentPath)
-    print('helloworld' +
-        edfs.currentPath)
-    return render(request, 'edfs2-ls.html', {'queryset': files})
+    queryset = {}
+    if request.method == 'GET':
+        root = ['/']
+        return render(request, 'edfs2-ls.html', {'queryset': root})
+    if request.method == 'POST':
+        # edfs = EDFSURL()
+        requestPath = request.POST.get('title')
+        requestPath = requestPath if requestPath else '/'
+        filePaths = edfs.ls(requestPath)
+        print(filePaths)
+        queryset['path'] = edfs.currentPath
+        queryset['data'] = filePaths
+        return render(request, 'edfs2-ls.html', {'queryset': filePaths})
 
-def mainView(request):
-    return render(request, 'edfs2-lspost.html')
 
 def lsDisplay(request):
     if request.method == 'GET':
@@ -52,7 +57,7 @@ def showPartition(request):
 
 def mkdir(request):
     if request.method == 'GET':
-        return render(request, 'makdir-request.html')
+        return render(request, 'edfs2-mkdir-reuqest.html')
     else:
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')

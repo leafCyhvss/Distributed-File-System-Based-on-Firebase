@@ -20,19 +20,26 @@ from EDFS1 import viewsF
 from EDFS2 import viewsS
 
 urlpatterns = [
-    # path('/', viewsF.helloworld),
+    # main view
+    path('', viewsF.helloworld),
 
     # EDFS1
     path('edfs1/', viewsF.helloworld),
+    # cmds
     path('edfs1/ls-request', viewsF.lsDisplay),
+
+    # search and analytics
 
     # EDFS2
     path('edfs2/', viewsS.helloworld),
+    # cmds
     path('edfs2/ls-request', viewsS.lsDisplay),
     path('edfs2/part-request', viewsS.showPartition),
     path('edfs2/mkdir', viewsS.mkdir),
     path('edfs2/upload', viewsS.put),
     path('edfs2/remove', viewsS.remove),
+
+    # search and analytics
     path('edfs2/analytics.html', viewsS.analytics),
     path('edfs2/report.html', viewsS.report)
 ]
