@@ -12,6 +12,7 @@ class EDFSURL():
         self.url = 'https://ds551-ad195-default-rtdb.firebaseio.com/'
         self.actualData = self.url + 'actualData/'
         self.rootPath = self.url + 'metadata/'
+        self.currentPath = '/'
 
     def checkValidPath(self, filePath: str) -> bool:
         currPath = self.rootPath
@@ -107,6 +108,8 @@ class EDFSURL():
         return ['Remove: success']
 
     def ls(self, filePath: str) -> None:
+        if filePath == '':
+            return ['/']
         if filePath[-1] == '/':
             filePath = filePath[:-1]
         if '.' in filePath:

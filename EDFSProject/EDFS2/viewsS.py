@@ -1,14 +1,17 @@
 from django.shortcuts import render, redirect
 from EDFS2.EDFS2 import EDFSURL
+from django.urls import reverse
 
+edfs = EDFSURL()
 
 # Create your views here.
 def helloworld(request):
     # 获取数据信息
     # edfs = EDFSURL()
-    # filePaths = edfs.ls('/test1')
-    # print(filePaths)
-    return render(request, 'ls.html', {'queryset': ['/']})
+    files = edfs.ls(edfs.currentPath)
+    print('helloworld' +
+        edfs.currentPath)
+    return render(request, 'ls.html', {'queryset': files})
 
 def mainView(request):
     return render(request, 'lspost.html')
@@ -18,7 +21,7 @@ def lsDisplay(request):
         root = ['/']
         return render(request, 'lspost.html',{'queryset': root})
     if request.method == 'POST':
-        edfs = EDFSURL()
+        # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
         filePaths = edfs.ls(requestPath)
@@ -29,7 +32,7 @@ def catDisplay(request):
     if request.method == 'GET':
         return render(request, 'partpost.html')
     if request.method == 'POST':
-        edfs = EDFSURL()
+        # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
         filePaths = edfs.cat(requestPath)
@@ -40,7 +43,7 @@ def showPartition(request):
     if request.method == 'GET':
         return render(request, 'partpost.html')
     if request.method == 'POST':
-        edfs = EDFSURL()
+        # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/' # 判断空
         filePaths = edfs.getPartitionLocations(requestPath)
@@ -51,7 +54,7 @@ def mkdir(request):
     if request.method == 'GET':
         return render(request, 'makdir-request.html')
     else:
-        edfs = EDFSURL()
+        # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
         result = edfs.mkdir(requestPath)
@@ -63,7 +66,7 @@ def put(request):
     if request.method == 'GET':
         return render(request, 'put-request.html')
     else:
-        edfs = EDFSURL()
+        # edfs = EDFSURL()
         filePath = request.POST.get('filepath')
         pnumber = int(request.POST.get('pnumber'))
         print(request.FILES)
@@ -81,3 +84,24 @@ def put(request):
 
 def analytics(request):
     return render(request, 'analytics.html')
+
+def remove(request):
+    if request.method == 'GET':
+        return render(request, 'remove-request.html')
+    if request.method == 'POST':
+
+        requestPath = request.POST.get('title')
+        print(requestPath)
+        result = edfs.remove(requestPath)
+        print(result)
+        filePath = requestPath.split('/')[:-1]
+        filePath = '/'.join(filePath)
+        print('file path: ', filePath)
+        files = edfs.ls(filePath)
+        # return render(request, 'ls.html', {'queryset': files})
+        edfs.currentPath = filePath
+        print('remove: ' + edfs.currentPath)
+        return redirect('/edfs2/')
+
+
+

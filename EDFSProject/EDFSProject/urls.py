@@ -20,10 +20,10 @@ from EDFS1 import viewsF
 from EDFS2 import viewsS
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    # path('/', viewsF.helloworld),
 
     # EDFS1
-    path('edfs1', viewsF.helloworld),
+    path('edfs1/', viewsF.helloworld),
 
 
     # EDFS2
@@ -32,5 +32,6 @@ urlpatterns = [
     path('edfs2/part-request', viewsS.showPartition),
     path('edfs2/mkdir', viewsS.mkdir),
     path('edfs2/upload', viewsS.put),
-    path('edfs2/analytics.html', viewsS.analytics)
+    path('edfs2/analytics.html', viewsS.analytics),
+    path('edfs2/remove', viewsS.remove),
 ]
