@@ -2,6 +2,11 @@
 
 {% block content %}
     <div class="container">
+        <div class="page-header">
+            <h1>Welcome to EDFS2 ! </h1>
+            <h2><small>This EDFS is built on Firebase with request queries</small></h2>
+        </div>
+
         <div style="margin-bottom: 10px">
             <a class="btn btn-success" href="/edfs2/ls-request">
                 <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
@@ -20,7 +25,7 @@
                 Remove a File
             </a>
         </div>
-        <div style="margin-bottom: 10px">
+        <div style="margin-bottom: 20px">
             <a class="btn btn-success" href="/edfs2/">
                 <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
                 Cat a File
@@ -34,8 +39,13 @@
                 Read Partition of a File
             </a>
         </div>
-        <div>
-            <br>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">System Message:</h3>
+            </div>
+            <div class="panel-body" aria-placeholder="No Message">
+                {{ msg }}
+            </div>
         </div>
         <div>
             <div class="panel-default">
@@ -47,6 +57,8 @@
                         <div class="input-group-btn">
                             <button type="submit" class="btn btn-primary">show</button>
                         </div>
+                        <span class="input-group-addon">Syntax:</span>
+                        <span class="input-group-addon">/test1/231113/</span>
                     </div>
                 </form>
             </div>

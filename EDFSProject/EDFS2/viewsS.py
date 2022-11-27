@@ -40,7 +40,7 @@ def catDisplay(request):
         requestPath = requestPath if requestPath else '/'
         filePaths = edfs.cat(requestPath)
         print(filePaths)
-        return render(request, 'edfs2-ls.html', {'queryset': filePaths})
+        return render(request, 'edfs2-ls.html', { 'queryset': filePaths})
 
 def showPartition(request):
     if request.method == 'GET':
@@ -63,7 +63,7 @@ def mkdir(request):
         result = edfs.mkdir(requestPath)
         print(result)
         filePaths = edfs.ls(requestPath)
-        return render(request, 'edfs2-ls.html', {'queryset': filePaths})
+        return render(request, 'edfs2-ls.html', {'msg': result, 'path': requestPath, 'queryset': filePaths})
 
 def put(request):
     if request.method == 'GET':
