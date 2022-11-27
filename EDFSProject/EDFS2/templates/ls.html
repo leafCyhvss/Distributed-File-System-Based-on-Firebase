@@ -46,5 +46,16 @@
                 </tbody>
             </table>
         </div>
+        <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>go to</label>
+                        <input type="text" class="form-control" placeholder="diretory path" name="title"/>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">show</button>
+            </form>
+        </div>
     </div>
 {% endblock %}

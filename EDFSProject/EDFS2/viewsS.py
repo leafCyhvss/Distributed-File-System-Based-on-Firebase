@@ -4,22 +4,31 @@ from django.urls import reverse
 
 edfs = EDFSURL()
 
-# Create your views here.
+# Create your views here
 def helloworld(request):
     # 获取数据信息
     # edfs = EDFSURL()
     # files = edfs.ls(edfs.currentPath)
     # print('helloworld' +
     #     edfs.currentPath)
-    return render(request, 'ls.html', {'queryset': ['/']})
+    if request.method == 'GET':
+        return render(request, 'ls.html', {'queryset': ['/']})
+    if request.method == 'POST':
+        # edfs = EDFSURL()
+        requestPath = request.POST.get('title')
+        # requestPath = requestPath if requestPath else '/'
+        filePaths = edfs.ls(requestPath)
+        # print(filePaths)
+        return render(request, 'ls.html', {'queryset': filePaths})
+
 
 def mainView(request):
     return render(request, 'lspost.html')
 
 def lsDisplay(request):
     if request.method == 'GET':
-        root = ['/']
-        return render(request, 'lspost.html',{'queryset': root})
+        # root = ['/']
+        return render(request, 'lspost.html')
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
