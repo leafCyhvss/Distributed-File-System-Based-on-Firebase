@@ -6,7 +6,6 @@ edfs = EDFSURL()
 
 # Create your views here.
 def helloworld(request):
-    queryset = {}
     if request.method == 'GET':
         root = ['/']
         return render(request, 'edfs2-ls.html', {'queryset': root})
@@ -15,10 +14,9 @@ def helloworld(request):
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
         filePaths = edfs.ls(requestPath)
+        edfs.currentPath = requestPath
         print(filePaths)
-        queryset['path'] = edfs.currentPath
-        queryset['data'] = filePaths
-        return render(request, 'edfs2-ls.html', {'queryset': filePaths})
+        return render(request, 'edfs2-ls.html', {'path': edfs.currentPath, 'queryset': filePaths})
 
 
 def lsDisplay(request):
