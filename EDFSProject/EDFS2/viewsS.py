@@ -11,22 +11,22 @@ def helloworld(request):
     files = edfs.ls(edfs.currentPath)
     print('helloworld' +
         edfs.currentPath)
-    return render(request, 'ls.html', {'queryset': files})
+    return render(request, 'edfs2-ls.html', {'queryset': files})
 
 def mainView(request):
-    return render(request, 'lspost.html')
+    return render(request, 'edfs2-lspost.html')
 
 def lsDisplay(request):
     if request.method == 'GET':
         root = ['/']
-        return render(request, 'lspost.html',{'queryset': root})
+        return render(request, 'edfs2-lspost.html', {'queryset': root})
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
         filePaths = edfs.ls(requestPath)
         print(filePaths)
-        return render(request, 'ls.html', {'queryset': filePaths})
+        return render(request, 'edfs2-ls.html', {'queryset': filePaths})
 
 def catDisplay(request):
     if request.method == 'GET':
@@ -37,7 +37,7 @@ def catDisplay(request):
         requestPath = requestPath if requestPath else '/'
         filePaths = edfs.cat(requestPath)
         print(filePaths)
-        return render(request, 'ls.html', {'queryset': filePaths})
+        return render(request, 'edfs2-ls.html', {'queryset': filePaths})
 
 def showPartition(request):
     if request.method == 'GET':
@@ -60,7 +60,7 @@ def mkdir(request):
         result = edfs.mkdir(requestPath)
         print(result)
         filePaths = edfs.ls(requestPath)
-        return render(request, 'ls.html', {'queryset': filePaths})
+        return render(request, 'edfs2-ls.html', {'queryset': filePaths})
 
 def put(request):
     if request.method == 'GET':
@@ -79,7 +79,7 @@ def put(request):
         result = edfs.put(fileObject.name, filePath, pnumber)
         print(result)
         files = edfs.ls(filePath)
-        return render(request, 'ls.html', {'queryset': files})
+        return render(request, 'edfs2-ls.html', {'queryset': files})
     # 考虑重定向去原来的页面，这样url会变
 
 def analytics(request):
@@ -99,7 +99,7 @@ def remove(request):
         filePath = '/'.join(filePath)
         print('file path: ', filePath)
         files = edfs.ls(filePath)
-        # return render(request, 'ls.html', {'queryset': files})
+        # return render(request, 'edfs2-ls.html', {'queryset': files})
         edfs.currentPath = filePath
         print('remove: ' + edfs.currentPath)
         return redirect('/edfs2/')

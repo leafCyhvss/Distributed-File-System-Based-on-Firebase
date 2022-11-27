@@ -24,7 +24,7 @@ urlpatterns = [
 
     # EDFS1
     path('edfs1/', viewsF.helloworld),
-
+    path('edfs1/ls-request', viewsF.lsDisplay),
 
     # EDFS2
     path('edfs2/', viewsS.helloworld),
