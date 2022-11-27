@@ -32,6 +32,7 @@ urlpatterns = [
     path('edfs2/part-request', viewsS.showPartition),
     path('edfs2/mkdir', viewsS.mkdir),
     path('edfs2/upload', viewsS.put),
+    path('edfs2/remove', viewsS.remove),
     path('edfs2/analytics.html', viewsS.analytics),
     path('edfs2/report.html', viewsS.report)
 ]

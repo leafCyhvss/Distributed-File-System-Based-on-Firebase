@@ -35,7 +35,7 @@ class EDFSURL():
                 currPath += dir + '/'
         return True
 
-    def put(self, filePath: str, systemPath: str, K: int) -> None:
+    def put(self, filePath: str, systemPath: str, K: int) -> list:
         '''
         hdfs dfs -put hello.txt /test1
 
@@ -83,7 +83,7 @@ class EDFSURL():
         print('Write: success')
         return ['Write: success']
 
-    def remove(self, filePath: str) -> None:
+    def remove(self, filePath: str) -> list:
         if filePath == '/':
             requests.delete(self.actualData[:-1] + '.json')
             return
@@ -107,7 +107,7 @@ class EDFSURL():
         print('Remove: success')
         return ['Remove: success']
 
-    def ls(self, filePath: str):
+    def ls(self, filePath: str) -> list:
         if filePath == '':
             return ['/']
         if filePath[-1] == '/':
@@ -138,7 +138,7 @@ class EDFSURL():
             response.append(filePath + '/' + name)
         return response
 
-    def cat(self, filePath: str) -> None:
+    def cat(self, filePath: str) -> pd.DataFrame:
         dataset = pd.DataFrame()
         if '.' not in filePath:
             print('Cat ERROR: Wrong File Path' + filePath)
@@ -153,8 +153,9 @@ class EDFSURL():
             # 这里的 records 是一个列表，列表里是字典
             for record in records:
                 dataset = dataset.append(record, ignore_index=True)
-        return dataset.head()
         print(dataset.info())
+        return dataset.head()
+
 
     def get(self, filePath: str) -> pd.DataFrame:
         dataset = pd.DataFrame()
@@ -175,7 +176,7 @@ class EDFSURL():
         dataset.to_csv('./downloaded' + filePath.replace('__', '.').replace('/', '-'))
         return dataset
 
-    def mkdir(self, dirPath: str) -> None:
+    def mkdir(self, dirPath: str) -> list:
         '''
         mkdir一次只能创造一级文件夹
         '''
