@@ -4,11 +4,12 @@ from django.urls import reverse
 
 edfs = EDFSURL()
 
+
 # Create your views here.
 def helloworld(request):
     if request.method == 'GET':
-        root = ['/']
-        return render(request, 'edfs2-ls.html', {'queryset': root})
+        root = edfs.ls('/')['data']
+        return render(request, 'edfs2-ls.html', {'path': 'root (/)', 'queryset': root})
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
@@ -32,6 +33,7 @@ def lsDisplay(request):
         print(filePaths)
         return render(request, 'edfs2-ls.html', {'queryset': filePaths})
 
+
 def catDisplay(request):
     if request.method == 'GET':
         return render(request, 'partpost.html')
@@ -43,16 +45,18 @@ def catDisplay(request):
         print(filePaths)
         return render(request, 'edfs2-ls.html', {'queryset': filePaths})
 
+
 def showPartition(request):
     if request.method == 'GET':
         return render(request, 'partpost.html')
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
-        requestPath = requestPath if requestPath else '/' # 判断空
+        requestPath = requestPath if requestPath else '/'  # 判断空
         filePaths = edfs.getPartitionLocations(requestPath)
         print(filePaths)
         return render(request, 'edfs2-showpartloc.html', {'queryset': filePaths})
+
 
 def mkdir(request):
     if request.method == 'GET':
@@ -65,6 +69,7 @@ def mkdir(request):
         print(result)
         filePaths = edfs.ls(requestPath)['data']
         return render(request, 'edfs2-ls.html', {'msg': result[0], 'path': requestPath, 'queryset': filePaths})
+
 
 def put(request):
     if request.method == 'GET':
@@ -86,27 +91,33 @@ def put(request):
         return render(request, 'edfs2-ls.html', {'msg': result[0], 'path': filePath, 'queryset': files})
     # 考虑重定向去原来的页面，这样url会变
 
+
 def analytics(request):
     return render(request, 'analytics.html')
 
+
 def report(request):
     return render(request, 'report.html')
+
+
 def remove(request):
     if request.method == 'GET':
-        return render(request, 'remove-request.html')
+        return render(request, 'edfs2-remove-request.html')
     if request.method == 'POST':
         requestPath = request.POST.get('title')
         print(requestPath)
+        requestPath = requestPath if requestPath else '/'
+        print('re:', requestPath)
+        if requestPath == '/':
+            files = edfs.ls('/')['data']
+            return render(request, 'edfs2-ls.html', \
+                          {'msg': 'Remove ERROR: Should not remove root (/)', \
+                           'path': 'root (/)', \
+                           'queryset': files})
         result = edfs.remove(requestPath)
         print(result)
         filePath = requestPath.split('/')[:-1]
         filePath = '/'.join(filePath)
         print('file path: ', filePath)
-        files = edfs.ls(filePath)
-        # return render(request, 'edfs2-ls.html', {'queryset': files})
-        edfs.currentPath = filePath
-        print('remove: ' + edfs.currentPath)
-        return redirect('/edfs2/')
-
-
-
+        files = edfs.ls(filePath)['data']
+        return render(request, 'edfs2-ls.html', {'msg': result[0], 'path': filePath, 'queryset': files})

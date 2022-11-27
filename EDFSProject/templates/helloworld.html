@@ -1,19 +1,16 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <div class="bs-example" data-example-id="simple-jumbotron">
-        <div class="jumbotron">
-            <h1>Welcome to EDFS2 !</h1>
-            <p>This EDFS is built on Firebase with request queries.</p>
-{#            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>#}
-        </div>
-    {#    <link rel="stylesheet" href="{% static 'plu' %}">#}
-    {#    <link rel="stylesheet"}">#}
-</head>
-<body>
+{% extends 'layout.html' %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container">
+        <div class="bs-example" data-example-id="simple-jumbotron">
+            <div class="jumbotron">
+                <h1>Welcome to EDFS !</h1>
+                <p>This EDFS is built on Firebase with request queries.</p>
+                {#            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>#}
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

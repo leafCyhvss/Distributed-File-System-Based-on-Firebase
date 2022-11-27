@@ -82,19 +82,19 @@ class EDFSURL():
     def remove(self, filePath: str) -> list:
         if filePath == '/':
             requests.delete(self.actualData[:-1] + '.json')
-            return ['Remove ERROR: Should not remove root']
+            return ['Remove ERROR: Should not remove root (/)']
         if filePath[-1] == '/':
             filePath = filePath[:-1]
         if '.' in filePath:
             filePath = filePath.replace('.', '__')
         else:
             print('Remove ERROR: Must remove a file but not a directory')
-            return ['Remove ERROR: Must remove a file but not a directory']
+            return ['Remove ERROR: Must remove a file but not a directory: ' + filePath]
         if not self.checkValidPath(filePath):
             if '__' in filePath:
                 filePath = filePath.replace('__', '.')
             print('Remove ERROR: Wrong path ' + filePath)
-            return ['Remove ERROR: Wrong path ' + filePath]
+            return ['Remove ERROR: Wrong path or file not exists ' + filePath]
 
         actualPaths = requests.get(self.rootPath[:-1] + filePath + '.json').json()
         for key, value in actualPaths.items():
