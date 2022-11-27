@@ -13,18 +13,19 @@ def helloworld(request):
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
-        filePaths = edfs.ls(requestPath)
+        msg = edfs.ls(requestPath)['success']
+        filePaths = edfs.ls(requestPath)['data']
         edfs.currentPath = requestPath
         print(filePaths)
-        return render(request, 'edfs2-ls.html', {'path': edfs.currentPath, 'queryset': filePaths})
+        return render(request, 'edfs2-ls.html', {'msg': msg, 'path': edfs.currentPath, 'queryset': filePaths})
 
 
 def lsDisplay(request):
     if request.method == 'GET':
         root = ['/']
-        return render(request, 'edfs2-lspost.html', {'queryset': root})
+        return render(request, 'edfs2-ls-request.html', {'queryset': root})
     if request.method == 'POST':
-        # edfs = EDFSURL()
+        # edfs = EDFSURL()x
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
         filePaths = edfs.ls(requestPath)
@@ -37,10 +38,10 @@ def catDisplay(request):
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
-        requestPath = requestPath if requestPath else '/'
+        # requestPath = requestPath if requestPath else '/'
         filePaths = edfs.cat(requestPath)
         print(filePaths)
-        return render(request, 'edfs2-ls.html', { 'queryset': filePaths})
+        return render(request, 'edfs2-ls.html', {'queryset': filePaths})
 
 def showPartition(request):
     if request.method == 'GET':
@@ -62,12 +63,12 @@ def mkdir(request):
         requestPath = requestPath if requestPath else '/'
         result = edfs.mkdir(requestPath)
         print(result)
-        filePaths = edfs.ls(requestPath)
-        return render(request, 'edfs2-ls.html', {'msg': result, 'path': requestPath, 'queryset': filePaths})
+        filePaths = edfs.ls(requestPath)['data']
+        return render(request, 'edfs2-ls.html', {'msg': result[0], 'path': requestPath, 'queryset': filePaths})
 
 def put(request):
     if request.method == 'GET':
-        return render(request, 'put-request.html')
+        return render(request, 'edfs2-put-request.html')
     else:
         # edfs = EDFSURL()
         filePath = request.POST.get('filepath')
@@ -75,14 +76,14 @@ def put(request):
         print(request.FILES)
         fileObject = request.FILES.get('filename')
         print(fileObject)
-        dataset = open(fileObject.name, 'wb')
+        dataset = open('./localData/' + fileObject.name, 'wb')
         for chunk in fileObject.chunks():
             dataset.write(chunk)
         dataset.close()
-        result = edfs.put(fileObject.name, filePath, pnumber)
+        result = edfs.put('./localData/' + fileObject.name, filePath, pnumber)
         print(result)
-        files = edfs.ls(filePath)
-        return render(request, 'edfs2-ls.html', {'queryset': files})
+        files = edfs.ls(filePath)['data']
+        return render(request, 'edfs2-ls.html', {'msg': result[0], 'path': filePath, 'queryset': files})
     # 考虑重定向去原来的页面，这样url会变
 
 def analytics(request):

@@ -36,10 +36,6 @@ class EDFSURL():
         return True
 
     def put(self, filePath: str, systemPath: str, K: int) -> list:
-        '''
-        hdfs dfs -put hello.txt /test1
-
-        '''
         if systemPath[-1] == '/':
             systemPath = systemPath[:-1]
 
@@ -86,7 +82,7 @@ class EDFSURL():
     def remove(self, filePath: str) -> list:
         if filePath == '/':
             requests.delete(self.actualData[:-1] + '.json')
-            return
+            return ['Remove ERROR: Should not remove root']
         if filePath[-1] == '/':
             filePath = filePath[:-1]
         if '.' in filePath:
@@ -108,17 +104,19 @@ class EDFSURL():
         return ['Remove: success']
 
     def ls(self, filePath: str) -> list:
+        filePath = filePath.replace(' ', '')
         if filePath == '':
-            return ['/']
+            return {'success': 'ls success', 'data': ['/']}
         if filePath[-1] == '/':
             filePath = filePath[:-1]
         if '.' in filePath:
             print('Ls ERROR: Wrong path or try to use ls command to look into a file')
-            return ['ls ERROR: Wrong path or try to use ls command to look into a file']
+            return {'success': ['ls ERROR: Wrong path or try to use ls command to look into a file'],\
+                    'data': ['Not A Directory']}
 
         if not self.checkValidPath(filePath):
             print('Ls ERROR: Wrong path ' + filePath)
-            return ['ls ERROR: Wrong path ' + filePath]
+            return {'success': 'ls ERROR: Wrong path ' + filePath, 'data': ['Wrong Path']}
 
         if filePath == '/':
             newPathURL = self.rootPath[:-1] + '.json'
@@ -129,14 +127,14 @@ class EDFSURL():
         for name in data.keys():
             if len(data.keys()) == 1:
                 print("This directory is empty")
-                return ["This directory is empty"]
+                return {'success': "This directory is empty", 'data': ['This Directory is Empty']}
             if name == 'Empty':
                 continue
             if '__' in name:
                 name = name.replace('__', '.')
             print(filePath + '/' + name)
             response.append(filePath + '/' + name)
-        return response
+        return {'success': 'ls success', 'data': response}
 
     def cat(self, filePath: str) -> pd.DataFrame:
         dataset = pd.DataFrame()
@@ -182,7 +180,7 @@ class EDFSURL():
         '''
         if dirPath == '/':
             print('Mkdir ERROR: Path exists')
-            return ['Mkdir ERROR: Path exists']
+            return ['Mkdir ERROR: Directory Already Exists: ' + '/']
         if dirPath[-1] == '/':
             dirPath = dirPath[:-1]
         dirNames = dirPath.split('/')[1:]  # 这里是为了去除 /user/john/hello.txt 第一个斜杠的影响
@@ -200,7 +198,7 @@ class EDFSURL():
                 existedPaths = requests.get(currPath[:-1] + '.json').json()
                 if existedPaths and dir in existedPaths:
                     print('Mkdir ERROR: Directory Already Exists')
-                    return ['Mkdir ERROR: Directory Already Exists']
+                    return ['Mkdir ERROR: Directory Already Exists: ' + dirPath]
                 else:
                     dirURL = currPath + dir + '/Empty.json'
                     requests.put(url=dirURL, data=json.dumps('1'))
