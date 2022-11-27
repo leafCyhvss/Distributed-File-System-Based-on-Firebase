@@ -107,7 +107,7 @@ class EDFSURL():
         print('Remove: success')
         return ['Remove: success']
 
-    def ls(self, filePath: str) -> None:
+    def ls(self, filePath: str):
         if filePath == '':
             return ['/']
         if filePath[-1] == '/':

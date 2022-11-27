@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>EDFS2</title>
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.min.css' %}">
     <style>
         .navbar {
@@ -24,12 +24,11 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href=""> EDFS system </a>
-
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/edfs1">EDFS1</a></li>
-                <li><a href="/edfs2">EDFS2</a></li>
+                <li><a href="/depart/list/">部门管理</a></li>
+                <li><a href="/user/list/">用户管理</a></li>
                 <li><a href="/pretty/list/">靓号管理</a></li>
 
 
@@ -55,10 +54,12 @@
 <div>
     {% block content %}{% endblock %}
 </div>
+<div class="container">
+    <div style="margin-bottom: 10px">
+        <a class="btn btn-success" href="analytics.html">analytics</a>
+        <a class="btn btn-success" href="report.html">final report</a>">
+    </div>
+</div>
 
-
-<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.min.js' %}"></script>
-{% block js %}{% endblock %}
 </body>
 </html>
