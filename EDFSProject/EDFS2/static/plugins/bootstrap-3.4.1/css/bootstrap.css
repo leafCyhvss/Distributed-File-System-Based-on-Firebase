@@ -1586,6 +1586,7 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+
 @media (min-width: 768px) {
   .container {
     width: 750px;
@@ -1607,6 +1608,7 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+
 .row {
   margin-right: -15px;
   margin-left: -15px;
@@ -5059,8 +5061,10 @@ a.badge:focus {
 .jumbotron .container {
   max-width: 100%;
 }
+
 @media screen and (min-width: 768px) {
   .jumbotron {
+
     padding-top: 48px;
     padding-bottom: 48px;
   }

@@ -4,7 +4,7 @@
     <div class="container">
         <div style="margin-bottom: 10px">
             <a class="btn btn-success" href="/edfs2/ls-request">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
                 ls request
             </a>
             <a class="btn btn-success" href="/edfs2/mkdir">
@@ -12,10 +12,14 @@
                 mkdir
             </a>
             <a class="btn btn-success" href="/edfs2/upload">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
                 upload
             </a>
+            <a class="btn btn-warning" href="analytics.html">analytics</a>
+            <a class="btn btn-warning" href="report.html">final report</a>
         </div>
+    <div>
+</div>
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">
@@ -36,7 +40,7 @@
                 {% for obj in queryset %}
                     <tr>
 {#                        <th>{{ obj.id }}</th>#}
-                        <td>{{ obj}}</td>
+                        <td><a>{{ obj}}</a></td>
 {#                        <td>#}
 {#                            <a class="btn btn-primary btn-xs" href="/depart/{{ obj.id }}/edit/">编辑</a>#}
 {#                            <a class="btn btn-danger btn-xs" href="/depart/delete/?nid={{ obj.id }}">删除</a>#}
@@ -58,4 +62,5 @@
             </form>
         </div>
     </div>
+
 {% endblock %}
