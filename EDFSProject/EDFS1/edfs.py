@@ -120,7 +120,7 @@ def ls(path):
     # 路径错误
     else:
         print('path is false')
-        return {'success': False}
+        return {'success': False, 'data': ['Wrong']}
 
 
 # print(ls("/user/yyy/"))

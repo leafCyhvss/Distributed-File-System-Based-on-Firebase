@@ -48,7 +48,7 @@ def showPartition(request):
         requestPath = requestPath if requestPath else '/' # 判断空
         filePaths = edfs.getPartitionLocations(requestPath)
         print(filePaths)
-        return render(request, 'getparttionsloc.html', {'queryset': filePaths})
+        return render(request, 'edfs2-showpartloc.html', {'queryset': filePaths})
 
 def mkdir(request):
     if request.method == 'GET':
