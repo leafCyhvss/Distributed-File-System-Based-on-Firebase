@@ -49,7 +49,8 @@ def catDisplay(request):
         print(result)
         # pd.set_option('colheader_justify', 'center')
         result.to_html('./templates/catresult.html')
-        return render(request, 'edfs2-cat-result.html', {'table':result.to_html()})
+        return render(request, 'edfs2-cat-result.html',\
+                      {'table':result.to_html(classes="table table-bordered table-hover")})
 
 
 def showPartition(request):
