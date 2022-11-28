@@ -31,7 +31,7 @@ class MapReducer():
                                                  & (dataset['transmission'] == 'Manual')]
                         if len(searchedDf.index) != 0:
                             ans.append({fileName: searchedDf})
-            print('ans\n', ans)
+            # print('ans\n', ans)
             return ans
         if edfsType == '1':
             pass
@@ -53,8 +53,11 @@ class MapReducer():
         for fileName, DFlist in tmpdataset.items():
             for partData in DFlist:
                 finalData[fileName] = pd.concat([finalData[fileName], partData], ignore_index=True)
-        print('='*50)
-        print(finalData)
+        # print('='*50)
+        # print(finalData)
+        return finalData
+
+
 
 
 x = MapReducer()
