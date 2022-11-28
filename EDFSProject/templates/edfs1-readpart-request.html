@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'layout.html' %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">EDFS1 Find Partition Locations of A File </h3>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Please Input File Path and Name:</label>
+                        <input type="text" class="form-control" placeholder="syntax: /test1/xxx.csv" name="filepath"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Partition Number:</label>
+                        <input type="text" class="form-control" placeholder="syntax: 5" name="pnumber"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">submit</button>
+                    <a href="/edfs1" class="btn btn-primary" role="button">cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

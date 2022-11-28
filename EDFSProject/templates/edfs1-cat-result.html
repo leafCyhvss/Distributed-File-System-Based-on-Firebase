@@ -2,12 +2,30 @@
 
 {% block content %}
     <div class="container">
+        <div style="margin-bottom: 10px">
+            <a class="btn btn-success" href="/edfs2">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                Back
+            </a>
+            <a class="btn btn-success" href="/edfs2/cat">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                New Cat Query
+            </a>
+        </div>
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">EDFS1 System Message:</h3>
+            </div>
+            <div class="panel-body" aria-placeholder="No Message">
+                {{ msg }}
+            </div>
+        </div>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"> Cat File Result: </h3>
             </div>
 
-            <div>
+            <div class="panel-body">
                 {{ table|safe }}
             </div>
         </div>

@@ -4,18 +4,22 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">EDFS1 new ls query </h3>
+                <h3 class="panel-title">
+                    EDFS1 New ls Query
+                </h3>
+
             </div>
             <div class="panel-body">
                 <form method="post">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label>directory path</label>
-                        <input type="text" class="form-control" placeholder="diretory path" name="title"/>
+                        <label>Please Input the Directory Path:</label>
+                        <input type="text" class="form-control" placeholder="syntax: /test1/test2" name="title"/>
                     </div>
-
                     <button type="submit" class="btn btn-primary">submit</button>
+                    <a href="/edfs1" class="btn btn-primary" role="button">cancel</a>
                 </form>
+
             </div>
         </div>
     </div>
