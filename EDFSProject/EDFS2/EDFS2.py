@@ -152,7 +152,7 @@ class EDFSURL():
             for record in records:
                 dataset = dataset.append(record, ignore_index=True)
         print(dataset.info())
-        return dataset.head()
+        return dataset
 
 
     def get(self, filePath: str) -> pd.DataFrame:
@@ -206,16 +206,21 @@ class EDFSURL():
                     return ['Mkdir: Success']
 
     def getPartitionLocations(self, filePath) -> list:
+        if filePath[0] != '/':
+            return {'success': ['Get Locations ERROR: Syntax start with /'],\
+                    'data': ['Incorrect Query']}
         if '.' in filePath:
             filePath = filePath.replace('.', '__')
         else:
             print('Get Locations ERROR: Must query a file but not a directory')
-            return ['Get Locations ERROR: Must query a file but not a directory']
+            return {'success': ['Get Locations ERROR: Must query a file but not a directory'],\
+                    'data': ['Incorrect Query']}
         if not self.checkValidPath(filePath):
             if '__' in filePath:
                 filePath = filePath.replace('__', '.')
             print('Get Locations ERROR: Wrong path ' + filePath)
-            return ['Get Locations ERROR: Wrong path ' + filePath]
+            return {'success': ['Get Locations ERROR: Wrong path ' + filePath], \
+                    'data': ['Incorrect Query']}
 
         actualPaths = requests.get(self.rootPath[:-1] + filePath + '.json').json()
         dataNodes = []
@@ -224,7 +229,8 @@ class EDFSURL():
             dataNode = value.replace(self.actualData, '').replace('.json', '')
             dataNodes.append(dataNode)
             print('Get Locations: The %s part of the file is stored in datanode %s' % (partNum, dataNode))
-        return dataNodes
+        return {'success': ['Get Locations Success '], \
+                    'data': dataNodes}
 
     def readPartition(self, filePath, partition) -> pd.DataFrame:
         if '.' in filePath:

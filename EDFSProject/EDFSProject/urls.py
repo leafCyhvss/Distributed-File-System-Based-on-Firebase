@@ -38,6 +38,7 @@ urlpatterns = [
     path('edfs2/mkdir', viewsS.mkdir),
     path('edfs2/upload', viewsS.put),
     path('edfs2/remove', viewsS.remove),
+    path('edfs2/cat', viewsS.catDisplay),
 
     # search and analytics
     path('edfs2/analytics.html', viewsS.analytics),

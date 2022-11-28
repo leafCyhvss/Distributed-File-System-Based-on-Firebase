@@ -2,17 +2,18 @@ from EDFS2 import EDFSURL
 
 e1 = EDFSURL()
 
-e1.mkdir('/test1/')
+# e1.mkdir('/test1/')
 # e1.mkdir('/test1/231113')
 # e1.mkdir('/test2/')
 # e1.mkdir('/test2/23/')
 # e1.mkdir('/test2/24/')
-# e1.put('./audi.csv', '/test1', 2)
-# e1.put('./ford.csv', '/test2/23', 4)
+# e1.put('./dataset/audi.csv', '/test1', 2)
+# e1.put('./dataset/ford.csv', '/test2/23', 4)
 
 # e1.cat('/test2/23')
 # e1.cat('/test2/23/ford.csv')
-
+# e1.cat('/test2/23/ford.csv')
+# e1.cat('/test1/toyota.csv')
 
 # e1.get('/test2/23/ford.csv')
 # # e1.remove('/test2/23/ford.csv')

@@ -29,33 +29,38 @@ def lsDisplay(request):
         # edfs = EDFSURL()x
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
-        filePaths = edfs.ls(requestPath)
+        msg = edfs.ls(requestPath)['success']
+        filePaths = edfs.ls(requestPath)['data']
+        edfs.currentPath = requestPath
         print(filePaths)
-        return render(request, 'edfs2-ls.html', {'queryset': filePaths})
+        return render(request, 'edfs2-ls.html', {'msg': msg, 'path': edfs.currentPath, 'queryset': filePaths})
 
 
 def catDisplay(request):
     if request.method == 'GET':
-        return render(request, 'partpost.html')
+        return render(request, 'edfs2-locpart-reuqest.html')
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         # requestPath = requestPath if requestPath else '/'
-        filePaths = edfs.cat(requestPath)
-        print(filePaths)
-        return render(request, 'edfs2-ls.html', {'queryset': filePaths})
+        result = edfs.cat(requestPath)
+        # print(filePaths)
+        print(result)
+        result.to_html('./templates/catresult.html')
+        return render(request,'catresult.html')
 
 
 def showPartition(request):
     if request.method == 'GET':
-        return render(request, 'partpost.html')
+        return render(request, 'edfs2-locpart-reuqest.html')
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'  # 判断空
-        filePaths = edfs.getPartitionLocations(requestPath)
+        msg = edfs.getPartitionLocations(requestPath)['success'][0]
+        filePaths = edfs.getPartitionLocations(requestPath)['data']
         print(filePaths)
-        return render(request, 'edfs2-showpartloc.html', {'queryset': filePaths})
+        return render(request, 'edfs2-locpart-result.html', {'msg': msg, 'queryset': filePaths})
 
 
 def mkdir(request):
