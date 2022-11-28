@@ -35,6 +35,7 @@ urlpatterns = [
     # cmds
     path('edfs2/ls-request', viewsS.lsDisplay),
     path('edfs2/part-request', viewsS.showPartition),
+    path('edfs2/readpart-request', viewsS.readPart),
     path('edfs2/mkdir', viewsS.mkdir),
     path('edfs2/upload', viewsS.put),
     path('edfs2/remove', viewsS.remove),

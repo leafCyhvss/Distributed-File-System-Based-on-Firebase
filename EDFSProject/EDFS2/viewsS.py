@@ -48,7 +48,6 @@ def catDisplay(request):
         # print(filePaths)
         print(result)
         # pd.set_option('colheader_justify', 'center')
-        result.to_html('./templates/catresult.html')
         return render(request, 'edfs2-cat-result.html',\
                       {'table':result.to_html(classes="table table-bordered table-hover")})
 
@@ -98,6 +97,8 @@ def put(request):
         files = edfs.ls(filePath)['data']
         return render(request, 'edfs2-ls.html', {'msg': result[0], 'path': filePath, 'queryset': files})
     # 考虑重定向去原来的页面，这样url会变
+
+
 def remove(request):
     if request.method == 'GET':
         return render(request, 'edfs2-remove-request.html')
@@ -120,10 +121,31 @@ def remove(request):
         files = edfs.ls(filePath)['data']
         return render(request, 'edfs2-ls.html', {'msg': result[0], 'path': filePath, 'queryset': files})
 
+
+
 def readPart(request):
+    if request.method == 'GET':
+        return render(request, 'edfs2-readpart-request.html')
+    if request.method == 'POST':
+        # edfs = EDFSURL()
+        requestPath = request.POST.get('title')
+        # requestPath = requestPath if requestPath else '/'
+        requestPath_list = requestPath.split(',')
+        result = edfs.readPartition(requestPath_list[0], int(requestPath_list[1]))
+        # print(filePaths)
+        print(result)
+        # pd.set_option('colheader_justify', 'center')
+        return render(request, 'edfs2-readpart-result.html',\
+                      {'table': result.to_html(classes="table table-bordered table-hover")})
+
+
     return
+
+
 def analytics(request):
     return render(request, 'analytics.html')
+
+
 
 def report(request):
     return render(request, 'report.html')
