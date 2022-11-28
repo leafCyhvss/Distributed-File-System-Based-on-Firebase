@@ -118,7 +118,24 @@ def remove(request):
         return render(request, 'edfs1-ls.html', {'msg': result[0], 'path': filePath, 'queryset': files})
 
 def readPart(request):
-    return
+    if request.method == 'GET':
+        return render(request, 'edfs1-readpart-request.html')
+    if request.method == 'POST':
+        # edfs = EDFSURL()
+        requestPath = request.POST.get('filepath')
+        # requestPath = requestPath if requestPath else '/'
+        pnumber = request.POST.get('pnumber')
+
+        ans = edfs.readPartition(requestPath, int(pnumber))
+        msg = ans['success']
+        result = ans['data']
+        if msg[0] == 'Read Partition Success':
+            # pd.set_option('colheader_justify', 'center')
+            return render(request, 'edfs1-readpart-result.html', \
+                          {'msg': msg[0], 'table': result.to_html(classes="table table-bordered table-hover")})
+        else:
+            return render(request, 'edfs1-cat-result.html', \
+                          {'msg': msg[0], 'table': 'Incorrect input'})
 def analytics(request):
     return render(request, 'analytics.html')
 
