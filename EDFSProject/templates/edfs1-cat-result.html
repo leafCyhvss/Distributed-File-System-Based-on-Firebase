@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"> Cat File Result: </h3>
+            </div>
+
+            <div>
+                {{ table|safe }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -2,62 +2,93 @@
 
 {% block content %}
     <div class="container">
+        <div class="page-header">
+            <h1>Welcome to edfs1 ! </h1>
+            <h2><small>This EDFS is built on Firebase with request queries</small></h2>
+        </div>
+
         <div style="margin-bottom: 10px">
             <a class="btn btn-success" href="/edfs1/ls-request">
-                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-                ls request
+                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                ls Request
             </a>
-{#            <a class="btn btn-success" href="/edfs1/mkdir">#}
-{#                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>#}
-{#                mkdir#}
-{#            </a>#}
-{#            <a class="btn btn-success" href="/edfs1/upload">#}
-{#                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>#}
-{#                upload#}
-{#            </a>#}
+            <a class="btn btn-success" href="/edfs1/mkdir">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                Make Directory
+            </a>
+            <a class="btn btn-success" href="/edfs1/upload">
+                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                Upload a File
+            </a>
+            <a class="btn btn-success" href="/edfs1/remove">
+                <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                Remove a File
+            </a>
         </div>
-    <div>
-</div>
+        <div style="margin-bottom: 20px">
+            <a class="btn btn-success" href="/edfs1/cat">
+                <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+                Cat a File
+            </a>
+            <a class="btn btn-success" href="/edfs1/part-request">
+                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                Get Partition Locations
+            </a>
+            <a class="btn btn-success" href="/edfs1/">
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                Read Partition of a File
+            </a>
+        </div>
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">System Message:</h3>
+            </div>
+            <div class="panel-body" aria-placeholder="No Message">
+                {{ msg }}
+            </div>
+        </div>
+        <div>
+            <div class="panel-default">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <span class="input-group-addon">GO TO:</span>
+                        <input type="text" class="form-control" placeholder="diretory path" name="title"/>
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-info">show</button>
+                        </div>
+                        <span class="input-group-addon">Syntax:</span>
+                        <span class="input-group-addon">/test1/231113/</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div>
+            <br>
+        </div>
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">
                 <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                File Paths
+                Contents in
+                {{ path }}
+                :
             </div>
-
+            {#            <ol class="breadcrumb">#}
+            {#                <li><a href="#">Home</a></li>#}
+            {#                <li><a href="#">Library</a></li>#}
+            {#                <li class="active">Data</li>#}
+            {#            </ol>#}
             <!-- Table -->
             <table class="table table-bordered">
-{#                <thead>#}
-{#                <tr>#}
-{#                    <th>FilePaths</th>#}
-{#                    <th>名称</th>#}
-{#                    <th>操作</th>#}
-{#                </tr>#}
-{#                </thead>#}
                 <tbody>
                 {% for obj in queryset %}
                     <tr>
-{#                        <th>{{ obj.id }}</th>#}
-                        <td>{{ obj}}</td>
-{#                        <td>#}
-{#                            <a class="btn btn-primary btn-xs" href="/depart/{{ obj.id }}/edit/">编辑</a>#}
-{#                            <a class="btn btn-danger btn-xs" href="/depart/delete/?nid={{ obj.id }}">删除</a>#}
-{#                        </td>#}
+                        <td>{{ obj }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
-        <div class="panel-body">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label>go to</label>
-                        <input type="text" class="form-control" placeholder="diretory path" name="title"/>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">show</button>
-            </form>
         </div>
     </div>
 
