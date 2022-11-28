@@ -6,7 +6,7 @@ import pandas as pd
 
 # -------------------firebase-------------------
 
-url = 'https://ds551-f9b92-default-rtdb.firebaseio.com/'
+url = 'https://demo01-76e03-default-rtdb.firebaseio.com/'
 fb = firebase.FirebaseApplication(url, None)
 
 
@@ -148,7 +148,13 @@ def ls(path):
 # print(ls("/user/yyy/"))
 
 
-def mkdir(path, folder):
+def mkdir(filepath):
+    if filepath[-1] == '/':
+        filepath = filepath[:-1]
+    folder = filepath.split('/')[-1]
+    print('folder', folder)
+    path = '/'.join(filepath.split('/')[:-1])
+    print('path', path)
     if path == '/':
         print('Mkdir ERROR: Path exists')
         return ['Mkdir ERROR: Directory Already Exists: ' + '/']
@@ -190,10 +196,13 @@ def mkdir(path, folder):
 # mkdir("/user", "ldw4")
 
 
-def cat(path, fileName):
-    if '.' not in path:
-        print('Cat ERROR: Wrong File Path' + path)
-        return {'success': ['Cat ERROR: Wrong File Path' + path], 'data': 'Incorrect Input'}
+def cat(filepath):
+    if filepath[-1] == '/':
+        filepath = filepath[:-1]
+    fileName = filepath.split('/')[-1]
+    print('fileName', fileName)
+    path = '/'.join(filepath.split('/')[:-1])
+    print('path', path)
 
     if path[-1] != "/":
         path = path + '/'
@@ -395,7 +404,14 @@ def readPartition(path, fileName):
 # readPartition("/user/yyy", 'toyota.csv')
 
 
-def rm(path, fileName):
+def rm(filepath):
+    if filepath[-1] == '/':
+        filepath = filepath[:-1]
+    fileName = filepath.split('/')[-1]
+    print('fileName', fileName)
+    path = '/'.join(filepath.split('/')[:-1])
+    print('path', path)
+
     fileName = fileName.replace(".", "~")
     a = getData()
     s = ''

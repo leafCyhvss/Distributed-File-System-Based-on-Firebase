@@ -257,3 +257,12 @@ class EDFSURL():
             dataset = dataset.append(record, ignore_index=True)
         print('Read Partition: The %s part of the file is:' % partition)
         return {'success': ['Read Partition Success'], 'data': dataset}
+
+    def getFilebyDatanode(self, datanode: str):
+        dataset = pd.DataFrame()
+        actualPath = self.actualData + datanode + '.json'
+        records = requests.get(actualPath).json()
+        print(records)
+        for record in records:
+            dataset = dataset.append(record, ignore_index=True)
+        return dataset

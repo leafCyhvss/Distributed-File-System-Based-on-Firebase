@@ -2,6 +2,7 @@ from EDFS2 import EDFSURL
 
 e1 = EDFSURL()
 
+e1.getFilebyDatanode('_test1_toyota__csvp1')
 # e1.mkdir('/test1/')
 # e1.mkdir('/test1/231113')
 # e1.mkdir('/test2/')

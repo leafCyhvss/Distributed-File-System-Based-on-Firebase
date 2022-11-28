@@ -9,29 +9,32 @@ def helloworld(request):
 
 def edfs1Main(request):
     if request.method == 'GET':
-        root = ['/']
-        return render(request, 'edfs1-ls.html', {'queryset': root})
+        root = edfs.ls('/user')['data']
+        return render(request, 'edfs1-ls.html', {'msg': 'All path start with /', 'path': 'root (/)', 'queryset': root})
     # render(request, 'edfs2-ls.html', {'msg': result[0], 'path': requestPath, 'queryset': filePaths}
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
-        filePaths = edfs.ls(requestPath)['data']
+        ans = edfs.ls(requestPath)
+        msg = ans['success']
+        filePaths = ans['data']
         print(filePaths)
-        return render(request, 'edfs1-ls.html', {'queryset': filePaths})
+        return render(request, 'edfs1-ls.html', {'msg': msg,'path': requestPath, 'queryset': filePaths})
 
 
 def lsDisplay(request):
     if request.method == 'GET':
-        root = ['/']
-        return render(request, 'edfs1-ls-request.html', {'queryset': root})
+        return render(request, 'edfs1-ls-request.html')
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
-        filePaths = edfs.ls(requestPath)['data']
+        ans = edfs.ls(requestPath)
+        msg = ans['success']
+        filePaths = ans['data']
         print(filePaths)
-        return render(request, 'edfs1-ls.html', {'queryset': filePaths})
+        return render(request, 'edfs1-ls.html',{'msg': msg,'path': requestPath, 'queryset': filePaths})
 
 
 def catDisplay(request):
@@ -41,13 +44,20 @@ def catDisplay(request):
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         # requestPath = requestPath if requestPath else '/'
-        result = edfs.cat(requestPath)
-        # print(filePaths)
-        print(result)
-        # pd.set_option('colheader_justify', 'center')
-        result.to_html('./templates/catresult.html')
-        return render(request, 'edfs1-cat-result.html',\
-                      {'table':result.to_html(classes="table table-bordered table-hover")})
+        ans = edfs.cat(requestPath)
+        msg = ans['success']
+        print('msg', msg)
+        result = ans['data']
+        if msg[0] == 'Cat Success':
+            result = ans['data']
+            # print(filePaths)
+            # print(result)
+            # pd.set_option('colheader_justify', 'center')
+            return render(request, 'edfs1-cat-result.html', \
+                          {'msg': msg[0], 'table': result.to_html(classes="table table-bordered table-hover")})
+        else:
+            return render(request, 'edfs1-cat-result.html', \
+                          {'msg': msg[0], 'table': 'Incorrect input'})
 
 
 def showPartition(request):
@@ -90,7 +100,7 @@ def put(request):
         for chunk in fileObject.chunks():
             dataset.write(chunk)
         dataset.close()
-        result = edfs.put('./localData/' + fileObject.name, filePath, pnumber)
+        result = edfs.put(filePath, './localData/' + fileObject.name, pnumber)
         print(result)
         files = edfs.ls(filePath)['data']
         return render(request, 'edfs1-ls.html', {'msg': result[0], 'path': filePath, 'queryset': files})
@@ -109,7 +119,7 @@ def remove(request):
                           {'msg': 'Remove ERROR: Should not remove root (/)', \
                            'path': 'root (/)', \
                            'queryset': files})
-        result = edfs.remove(requestPath)
+        result = edfs.rm(requestPath)
         print(result)
         filePath = requestPath.split('/')[:-1]
         filePath = '/'.join(filePath)
@@ -135,7 +145,8 @@ def readPart(request):
                           {'msg': msg[0], 'table': result.to_html(classes="table table-bordered table-hover")})
         else:
             return render(request, 'edfs1-cat-result.html', \
-                          {'msg': msg[0], 'table': 'Incorrect input'})
+                          {'msg': msg[0], 'table': result.to_html(classes="table table-bordered table-hover")})
+
 def analytics(request):
     return render(request, 'analytics.html')
 
