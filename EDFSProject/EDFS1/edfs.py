@@ -2,6 +2,7 @@ import json
 import string
 
 from firebase import firebase
+import pandas as pd
 
 # -------------------firebase-------------------
 
@@ -25,36 +26,43 @@ def readData(file, k):
     try:
         f = open(file, 'r', encoding="utf-8")
     except:
-        print("files do not exist")
+        print("文件不存在")
         return False
     tem = 1
     r = []
-    for i in range(1, k + 1):
-        r.append([])
-    for line in f:
-        if tem:
-            c = line
-            tem = 0
-            continue
-        ss = str(dict(zip(c.replace("\n", '').split(
-            ","), line.replace("\n", '').split(','))))
-        h = str(abs(hash(line)) % k + 1)
-        r[int(h) - 1].append(ss)
-    data = {}
-    for i in range(1, k + 1):
-        data[i] = r[i - 1]
-
+    count = 0
     result = {}
-    result['data'] = data
+    for i in range(1, k + 1):
+        # r.append([])
+        result[(i)] = []
+    for line in f:
+        count = count + 1
+        # if tem:
+        #     c = line
+        #     tem = 0
+        #     print(c)
+        #     continue
+        # print(abs(hash(line)))
+        result[(abs(hash(line)) % k + 1)].append({'data': line, "index": count})
+    # print(result)
+    #     ss = str(dict(zip(c.replace("\n", '').split(","), line.replace("\n", '').split(','))))
+    #     h = str(abs(hash(line)) % k + 1)
+    #     r[int(h) - 1].append(ss)
+    # data = {}
+    # for i in range(1, k + 1):
+    #     data[i] = r[i - 1]
+    # result['data'] = data
     par = {}
     for i in range(1, k + 1):
-        par["p" + str(i)] = "https://ds551-f9b92-default-rtdb.firebaseio.com/data/" + file.split(".")[0] + str(
+        par["p" + str(i)] = "https://demo01-76e03-default-rtdb.firebaseio.com/data/" + file.split(".")[0] + str(
             i) + ".json"
     result["part"] = par
+
+    # print(result)
     return result
 
 
-# print(readData("toyota.csv", 2))
+# readData("toyota.csv", 2)
 
 
 # -------------------firebase-------------------
@@ -104,6 +112,13 @@ def analysePath(path):
 
 
 def ls(path):
+    if path == '':
+        return {'success': 'ls success', 'data': ['/']}
+
+    if '.' in path:
+        print('Ls ERROR: Wrong path or try to use ls command to look into a file')
+        return {'success': ['ls ERROR: Wrong path or try to use ls command to look into a file'], \
+                'data': ['Not A Directory']}
     a = getData()
     pp = analysePath(path)
 
@@ -116,23 +131,33 @@ def ls(path):
         for k in list(c.keys()):
             if '~' in k and k != 'file~':
                 l.append(k)
-        return {'success': True, "data": l}
+        if l == []:
+            print("No file")
+            return {'success': "This directory is empty", 'data': ['This Directory is Empty']}
+
+        for i in l:
+            print(i.replace("~", "."))
+        return {'success': 'ls success', 'data': l}
+
     # 路径错误
     else:
-        print('path is false')
-        return {'success': False, 'data': ['Wrong']}
+        print('Ls ERROR: Wrong path: ' + path)
+        return {'success': 'ls ERROR: Wrong path ' + path, 'data': ['Wrong Path']}
 
 
 # print(ls("/user/yyy/"))
 
 
 def mkdir(path, folder):
+    if path == '/':
+        print('Mkdir ERROR: Path exists')
+        return ['Mkdir ERROR: Directory Already Exists: ' + '/']
     # 新建文件路径
     pp = analysePath(path)
     # 验证
     if '~' in folder:
-        print("folder illegal")
-        return False
+        print("LS ERROR:Folder wrong")
+        return ['Mkdir ERROR: Directory Already Exists: ' + '/']
     # 获取数据
     a = getData()
     c = a
@@ -145,31 +170,39 @@ def mkdir(path, folder):
         c_key = list(c.keys())
 
         if folder in c_key:
-            print("folder exists")
-            return False
-
-        s = 'a' + s + "['" + folder + "']" + '={"file~":0}'
+            print("LS ERROR:Folder wrong")
+            return ['Mkdir ERROR: Directory Already Exists: ' + path]
+        print(s)
+        s = 'a' + s + "['" + folder + "']" + '={"empty":1}'
+        # s = 'a' + s + "['" + folder + "']" + '={"file~":0}'
+        # print(a)
         exec(s)
+        # exec (i)
         fb.put('test2', 'root', a)
-        print('mkdir is success')
+        print('mkdir success')
+        return ['Mkdir: Success']
     # # 路径错误
     else:
-        print('path is false')
-        return False
+        print("LS ERROR:Folder wrong")
+        return ['Mkdir ERROR: Wrong Path: ' + path]
 
 
-# mkdir("/user", "ldw")
+# mkdir("/user", "ldw4")
+
 
 def cat(path, fileName):
+    if '.' not in path:
+        print('Cat ERROR: Wrong File Path' + path)
+        return {'success': ['Cat ERROR: Wrong File Path' + path], 'data': 'Incorrect Input'}
+
     if path[-1] != "/":
-        path = path+'/'
+        path = path + '/'
     a = getData()
     pp = analysePath(path)
     if not pp['success']:
         print('path is false')
-        return False
+        return {'success': ['Cat ERROR: Wrong File Path' + path], 'data': 'Incorrect Input'}
     else:
-
         tem = True
         c = pp['data']
         c.append(fileName.replace(".", "~"))
@@ -180,22 +213,87 @@ def cat(path, fileName):
                 a = a[p]
             else:
                 tem = False
-
         if tem:
             ll = list(a.values())
+            data = {}
             # print(path)
             for i in range(1, len(ll) + 1):
-                f = fb.get("data", path.replace('/', '-') +
-                           fileName.split(".")[0] + str(i))
-                print(f)
-                # print(path.replace('/','-')+fileName.split(".")[0] + str(i))
-            return True
+                f = fb.get("data", path.replace('/', '-') + fileName.split(".")[0] + str(i))
+                # print(f)
+
+                for d in f:
+                    data[d['index']] = d['data']
+            columns = data[1].split(',')
+
+            datas = []
+            for i in range(2, len(data) + 1):
+                datas.append(data[i].replace('\n', '').split(','))
+                # print(data[i])
+
+            # pd.set_option('display.max_columns', None)
+            # # 显示所有行
+            # pd.set_option('display.max_rows', None)
+            df = pd.DataFrame(datas,
+                              columns=columns)
+            # df.head()
+            # 显示所有列
+            pd.set_option('display.max_columns', None)
+            # 显示所有行
+            pd.set_option('display.max_rows', None)
+            print(df.head())
+            print(df.info())
+            return {'success': ['Cat Success'], 'data': df}
         else:
-            print("file does not exist")
-            return False
+            print("Cat ERROR:File Name wrong")
+            return {'success': ['Cat ERROR: Wrong File Path' + path], 'data': 'Incorrect Input'}
 
 
-# cat("/user/yyy", 'toyota.csv')
+# cat("/user/lcj", 'toyota.csv')
+
+def get(path, fileName):
+    if '.' not in fileName:
+        print('Get File ERROR: Wrong File Path' + path)
+        return ['Get File ERROR: Wrong File Path: ' + path]
+    if path[-1] != "/":
+        path = path + '/'
+    a = getData()
+    pp = analysePath(path)
+    if not pp['success']:
+        print('path is false')
+        return ['Get File ERROR: Wrong File Path: ' + path]
+    else:
+        tem = True
+        c = pp['data']
+        c.append(fileName.replace(".", "~"))
+
+        for p in c:
+            e = list(a.keys())
+            if p in e:
+                a = a[p]
+            else:
+                tem = False
+        if tem:
+            ll = list(a.values())
+            data = {}
+            # print(path)
+            for i in range(1, len(ll) + 1):
+                f = fb.get("data", path.replace('/', '-') + fileName.split(".")[0] + str(i))
+                # print(f)
+
+                for d in f:
+                    data[d['index']] = d['data']
+            fg = open("copy_" + fileName, "a")
+            for i in range(1, len(data) + 1):
+                fg.write(data[i])
+            print("save done")
+            fg.close()
+            return data
+        else:
+            print("文件已不存在")
+            return ['Get File ERROR: Wrong File Path: ' + path]
+
+
+# get("/user/lcj", 'toyota.csv')
 
 def put(path, fileName, k):
     if path[-1] == '/':
@@ -203,8 +301,8 @@ def put(path, fileName, k):
     a = getData()
     pp = analysePath(path)
     if not pp['success']:
-        print('path is false')
-        return False
+        print("Put ERROR:path wrong")
+        return ['Write ERROR: Wrong path: ' + path]
     else:
 
         tem = True
@@ -219,8 +317,8 @@ def put(path, fileName, k):
                 tem = False
 
         if tem:
-            print("file exists")
-            return False
+            print("Put ERROR:path wrong")
+            return ['Write ERROR: File ' + path + '/' + ' already exists']
         else:
 
             ee = path.split("/")
@@ -229,37 +327,46 @@ def put(path, fileName, k):
                 ww = ww + i + "-"
 
             r = readData(fileName, k)
+
             if r == False:
-                return
+                return False;
             for i in range(1, k + 1):
-                pass
                 # put data
-                fb.put("data", ww + fileName.split(".")
-                       [0] + str(i), r['data'][i])
-            pass
+                fb.put("data", ww + fileName.split(".")[0] + str(i), r[i])
+
             # update path
             s = ""
+            c = ""
             pp['data'][-1] = pp['data'][-1].replace(".", "~")
             for p in pp['data']:
-                print(p)
                 s = s + '["' + p + '"]'
-
+                if '~' not in p:
+                    c = c + '["' + p + '"]'
             a = getData()
+
             s = 'a' + s + '=' + str(r['part'])
+            c = 'a' + c + '["empty"] = "0"'
+
             exec(s)
+            exec(c)
             fb.put('test2', 'root', a)
-            return True
+            print("Put success")
+            return ['Write: success']
 
 
-# print(put("/user/yyy", 'toyota.csv',8))
+# print(put("/user/ldw/", 'cars.csv',2))
 
 
 def readPartition(path, fileName):
+    if '.' not in path:
+        return {'success': ['Read Partition ERROR: Must read a file but not a directory'], 'data': 'Incorrect input'}
+
     a = getData()
     pp = analysePath(path)
     if not pp['success']:
-        print('path is false')
-        return False
+        print("ReadPartition ERROR:path wrong")
+        return {'success': ['Read Partition ERROR: Wrong path ' + path], 'data': 'Incorrect input'}
+
     else:
 
         tem = True
@@ -272,16 +379,20 @@ def readPartition(path, fileName):
                 a = a[p]
             else:
                 tem = False
-
         if tem:
-            print()
-            return list(a.keys())
+            # print(a.keys())
+            index = 0
+            for i in list(a.keys()):
+                index = index + 1
+                print("Get Location The " + str(index) + " part of the file in stored in datanode " + i)
+            return {'success': ['Get Locations Success '], \
+                    'data': a.keys()}
         else:
-            print("file does not exist")
-            return False
+            return {'success': ['Read Partition ERROR: Wrong path ' + path], 'data': 'Incorrect input'}
 
 
-# print(readPartition("/user/yyy", 'toyota.csv'))
+
+# readPartition("/user/yyy", 'toyota.csv')
 
 
 def rm(path, fileName):
@@ -290,8 +401,8 @@ def rm(path, fileName):
     s = ''
     pp = analysePath(path)
     if not pp['success']:
-        print('path is false')
-        return False
+        print("RM ERROR:Path wrong")
+        return ['Remove ERROR: Wrong path or file not exists ' + path]
     else:
         tem = True
         c = pp['data']
@@ -317,26 +428,52 @@ def rm(path, fileName):
                 s = s + '["' + p + '"]'
             a = getData()
             s = "del a" + s
+            print(s)
             exec(s)
             fb.put('test2', 'root', a)
 
             print('rm success')
-            return True
+            # print(path['data'])
+            if len(ls(path)['data']) == 0:
+
+                pp = analysePath(path)
+                c = ""
+                pp['data'][-1] = pp['data'][-1].replace(".", "~")
+                for p in pp['data']:
+                    if '~' not in p:
+                        c = c + '["' + p + '"]'
+                a = getData()
+                c = 'a' + c + '["empty"] = "1"'
+                exec(c)
+                fb.put('test2', 'root', a)
+            return ['Remove: success']
         else:
-            print("file does not exist")
-            return False
+            print("RM ERROR:File Name wrong")
+            return ['Remove ERROR: Wrong path or file not exists ' + path]
 
 
-# print(rm("/user/yyy", 'toyota.csv'))
+# print(rm("/user/ldw", 'copytoyota.csv'))
 
 
 def getPartitionLocations(path, fileName, k):
+    if path[0] != '/':
+        return {'success': ['Get Locations ERROR: Syntax start with /'], \
+                'data': ['Incorrect Query']}
+    if '.' not in fileName:
+        return {'success': ['Get Locations ERROR: Must query a file but not a directory'], \
+                'data': ['Incorrect Query']}
+
+    if '~' in path:
+        return {'success': ['Get Locations ERROR: Wrong path ' + path], \
+                'data': ['Incorrect Query']}
+
     if path[-1] != "/":
         path = path + '/'
     a = getData()
     pp = analysePath(path)
     if not pp['success']:
-        print('path is false')
+        return {'success': ['Get Locations ERROR: Wrong path ' + path], \
+                'data': ['Incorrect Query']}
         return False
     else:
 
@@ -360,88 +497,107 @@ def getPartitionLocations(path, fileName, k):
                     t = False
 
             if t:
-                print("PartitionLocations does not exist")
-                return False
-            f = fb.get("data", path.replace('/', '-') +
-                       fileName.split(".")[0] + str(k))
-            print(f)
-            return True
+                print("RM GetPartitionLocations:PartitionLocations wrong")
+                return {'success': ['Get Locations ERROR: Wrong path ' + path], \
+                        'data': ['Incorrect Query']}
+            f = fb.get("data", path.replace('/', '-') + fileName.split(".")[0] + str(k))
+            for i in f:
+                print(i)
+            return {'success': ['Get Locations Success '], \
+                    'data': f}
+
         else:
-            print("file does not exist")
-            return False
+            return {'success': ['Get Locations ERROR: Wrong path ' + path], \
+                    'data': ['Incorrect Query']}
 
 
-# print(getPartitionLocations("/user/yyy", 'toyota.csv',"1"))
 
-def cmd(c):
-    c = c.replace("  ", " ")
-    c = c.strip()
-    if " " not in c:
-        return {'success': False, "data": "command not found"}
+# getPartitionLocations("/user/yyy", 'toyota.csv',"1")
 
-    cc = ['ls', 'mkdir', 'put', 'rm', 'cat',
-          'getPartitionLocations', 'readPartition']
-    a = c.split(" ")[0]
-    if a not in cc:
-        return {'success': False, "data": "command not found"}
-
-    if a == 'ls':
-        if len(c.split(" ")) != 2:
-            return {'success': False, "data": "args not found"}
-        else:
-            return ls(c.split(" ")[1])
-
-    if a == "mkdir":
-        if len(c.split(" ")) != 3:
-            return {'success': False, "data": "args not found"}
-        else:
-            return mkdir(c.split(" ")[1], c.split(" ")[2])
-
-    if a == "put":
-        if len(c.split(" ")) != 4:
-            return {'success': False, "data": "args not found"}
-        else:
-            return put(c.split(" ")[1], c.split(" ")[2], int(c.split(" ")[3]))
-
-    if a == 'rm':
-        if len(c.split(" ")) != 3:
-            return {'success': False, "data": "args not found"}
-        else:
-            if c.split(" ")[1][-1] == '/':
-
-                return rm(c.split(" ")[1][0:-1], c.split(" ")[2])
-            else:
-                return rm(c.split(" ")[1], c.split(" ")[2])
-
-    if a == 'cat':
-        if len(c.split(" ")) != 3:
-            return {'success': False, "data": "args not found"}
-        else:
-            return cat(c.split(" ")[1], c.split(" ")[2])
-
-    if a == 'getPartitionLocations':
-        if len(c.split(" ")) != 4:
-            return {'success': False, "data": "args not found"}
-        else:
-            return getPartitionLocations(c.split(" ")[1], c.split(" ")[2], c.split(" ")[3])
-
-    if a == 'readPartition':
-        if len(c.split(" ")) != 3:
-            return {'success': False, "data": "args not found"}
-        else:
-            return readPartition(c.split(" ")[1], c.split(" ")[2])
-
-
-# print(cmd("readPartition /user/yyy/ toyota.csv "))
-
-if __name__ == '__main__':
-    print("welcome EDFS~")
-    tem = True
-    while tem:
-        c = input()
-        if c == 'exit':
-            tem = False
-            print("bye~")
-        # print(cmd("readPartition /user/yyy/ toyota.csv "))
-        if c != 'exit':
-            print(cmd(c))
+# def cmd(c):
+#     c = c.replace("  ", " ")
+#     c = c.strip()
+#     if " " not in c:
+#         print("command not found")
+#         return {'success': False, "data": "command not found"}
+#
+#     cc = ['ls', 'mkdir', 'put', 'rm', 'cat', 'getPartitionLocations', 'readPartition', 'get']
+#     a = c.split(" ")[0]
+#     if a not in cc:
+#         print("command not found")
+#         return {'success': False, "data": "command not found"}
+#
+#     if a == 'ls':
+#         if len(c.split(" ")) != 2:
+#             print("args not found")
+#             return {'success': False, "data": "args not found"}
+#         else:
+#             return ls(c.split(" ")[1])
+#
+#     if a == "mkdir":
+#         if len(c.split(" ")) != 3:
+#             print("args not found")
+#             return {'success': False, "data": "args not found"}
+#         else:
+#             return mkdir(c.split(" ")[1], c.split(" ")[2])
+#
+#     if a == "put":
+#         if len(c.split(" ")) != 4:
+#             print("args not found")
+#             return {'success': False, "data": "args not found"}
+#         else:
+#             return put(c.split(" ")[1], c.split(" ")[2], int(c.split(" ")[3]))
+#
+#     if a == 'rm':
+#         if len(c.split(" ")) != 3:
+#             print("args not found")
+#             return {'success': False, "data": "args not found"}
+#         else:
+#             if c.split(" ")[1][-1] == '/':
+#
+#                 return rm(c.split(" ")[1][0:-1], c.split(" ")[2])
+#             else:
+#                 return rm(c.split(" ")[1], c.split(" ")[2])
+#
+#     if a == 'cat':
+#         if len(c.split(" ")) != 3:
+#             print("args not found")
+#             return {'success': False, "data": "args not found"}
+#         else:
+#             return cat(c.split(" ")[1], c.split(" ")[2])
+#
+#     if a == 'get':
+#         if len(c.split(" ")) != 3:
+#             print("args not found")
+#             return {'success': False, "data": "args not found"}
+#         else:
+#             return get(c.split(" ")[1], c.split(" ")[2])
+#
+#     if a == 'getPartitionLocations':
+#         if len(c.split(" ")) != 4:
+#             print("args not found")
+#             return {'success': False, "data": "args not found"}
+#         else:
+#             return getPartitionLocations(c.split(" ")[1], c.split(" ")[2], c.split(" ")[3])
+#
+#     if a == 'readPartition':
+#         if len(c.split(" ")) != 3:
+#             print("args not found")
+#             return {'success': False, "data": "args not found"}
+#         else:
+#             return readPartition(c.split(" ")[1], c.split(" ")[2])
+#
+#
+# # print(cmd("readPartition /user/yyy/ toyota.csv "))
+#
+# if __name__ == '__main__':
+#     print("welcome EDFS~")
+#     tem = True
+#     while tem:
+#         c = input()
+#         if c == 'exit':
+#             tem = False
+#             print("bey~")
+#         # print(cmd("readPartition /user/yyy/ toyota.csv "))
+#         if c != 'exit':
+#             cmd(c)
