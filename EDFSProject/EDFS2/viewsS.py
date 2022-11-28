@@ -48,8 +48,8 @@ def catDisplay(request):
         # print(filePaths)
         print(result)
         # pd.set_option('colheader_justify', 'center')
-        return render(request, 'edfs2-cat-result.html',\
-                      {'table':result.to_html(classes="table table-bordered table-hover")})
+        return render(request, 'edfs2-cat-result.html', \
+                      {'table': result.to_html(classes="table table-bordered table-hover")})
 
 
 def showPartition(request):
@@ -122,7 +122,6 @@ def remove(request):
         return render(request, 'edfs2-ls.html', {'msg': result[0], 'path': filePath, 'queryset': files})
 
 
-
 def readPart(request):
     if request.method == 'GET':
         return render(request, 'edfs2-readpart-request.html')
@@ -131,13 +130,14 @@ def readPart(request):
         requestPath = request.POST.get('title')
         # requestPath = requestPath if requestPath else '/'
         requestPath_list = requestPath.split(',')
+        if len(requestPath_list) != 2:
+            return render(request, 'edfs2-ls.html', {'msg': 'Read Part ERROR: Invalid input'})
         result = edfs.readPartition(requestPath_list[0], int(requestPath_list[1]))
         # print(filePaths)
         print(result)
         # pd.set_option('colheader_justify', 'center')
-        return render(request, 'edfs2-readpart-result.html',\
+        return render(request, 'edfs2-readpart-result.html', \
                       {'table': result.to_html(classes="table table-bordered table-hover")})
-
 
     return
 
@@ -146,8 +146,5 @@ def analytics(request):
     return render(request, 'analytics.html')
 
 
-
 def report(request):
     return render(request, 'report.html')
-
-
