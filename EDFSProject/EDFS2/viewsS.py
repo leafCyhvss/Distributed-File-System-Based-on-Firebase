@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from EDFS2.EDFS2 import EDFSURL
+from MapReduce.mapreduce import MapReducer
 import pandas as pd
 from django.urls import reverse
 
@@ -39,7 +40,7 @@ def lsDisplay(request):
 
 def catDisplay(request):
     if request.method == 'GET':
-        return render(request, 'edfs2-locpart-reuqest.html')
+        return render(request, 'edfs2-cat-request.html')
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
@@ -60,7 +61,7 @@ def catDisplay(request):
 
 def showPartition(request):
     if request.method == 'GET':
-        return render(request, 'edfs2-locpart-reuqest.html')
+        return render(request, 'edfs2-locpart-request.html')
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
@@ -74,7 +75,7 @@ def showPartition(request):
 def mkdir(request):
     if request.method == 'GET':
         return render(request, 'edfs2-mkdir-reuqest.html')
-    else:
+    if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         requestPath = requestPath if requestPath else '/'
@@ -87,7 +88,7 @@ def mkdir(request):
 def put(request):
     if request.method == 'GET':
         return render(request, 'edfs2-put-request.html')
-    else:
+    if request.method == 'POST':
         # edfs = EDFSURL()
         filePath = request.POST.get('filepath')
         pnumber = int(request.POST.get('pnumber'))
@@ -148,6 +149,19 @@ def readPart(request):
             return render(request, 'edfs2-cat-result.html', \
                           {'msg': msg[0], 'table': 'Incorrect input'})
 
+def search(request):
+    if request.method == 'GET':
+        return render(request, 'search-request.html')
+    if request.method == 'POST':
+        # edfs = EDFSURL()
+        filePath = request.POST.get('filepath')
+        print(filePath)
+        pnumber = int(request.POST.get('pnumber'))
+        print(request.FILES)
+        # fileObject = request.FILES.get('filename')
+        Transmission = request.FILES.get('Transmission')
+        print('Transmission', Transmission)
+        return render(request, 'search-request.html')
 
 def analytics(request):
     return render(request, 'analytics.html')

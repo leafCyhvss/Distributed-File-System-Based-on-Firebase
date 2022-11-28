@@ -50,6 +50,6 @@ urlpatterns = [
     path('edfs2/read-part', viewsS.readPart),
 
     # search and analytics
-    path('edfs2/analytics.html', viewsS.analytics),
-    path('edfs2/report.html', viewsS.report)
+    path('search', viewsS.search),
+    path('analytics', viewsS.analytics),
 ]

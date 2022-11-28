@@ -4,7 +4,7 @@ from EDFS2.EDFS2 import EDFSURL
 from EDFS1 import edfs
 
 
-class MapReduce():
+class MapReducer():
 
     def __init__(self):
         self.edfs2 = EDFSURL()
@@ -57,6 +57,6 @@ class MapReduce():
         print(finalData)
 
 
-x = MapReduce()
+x = MapReducer()
 ans = x.searchMapper(['/test1/audi.csv', '/test1/toyota.csv'], '2')
 x.searchReducer(ans)

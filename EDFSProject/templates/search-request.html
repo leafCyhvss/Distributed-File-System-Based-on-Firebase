@@ -4,23 +4,35 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">EDFS2 Read A Partition of A File </h3>
+                <h3 class="panel-title"> Please input search conditions: </h3>
             </div>
+
             <div class="panel-body">
                 <form method="post">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label>Please Input File Path and Name:</label>
-                        <input type="text" class="form-control" placeholder="syntax: /test1/xxx.csv" name="filepath"/>
+                        <label>File Path to Be Stored in:</label>
+                        <input type="text" class="form-control" placeholder="syntax: /test1/" name="filepath"/>
                     </div>
-
                     <div class="form-group">
                         <label>Partition Number:</label>
                         <input type="text" class="form-control" placeholder="syntax: 5" name="pnumber"/>
                     </div>
+                    <div class="form-group">
+                        <label>Transmission</label>
+                        <br>
+                        <input type="text" list="list" placeholder="select" name="Transmission">
+                        <datalist id="list">
+                            <option>Manual</option>
+                            <option>Auto</option>
+                        </datalist>
+                    </div>
+
+
                     <button type="submit" class="btn btn-primary">submit</button>
                     <a href="/edfs2" class="btn btn-primary" role="button">cancel</a>
                 </form>
+
             </div>
         </div>
     </div>
