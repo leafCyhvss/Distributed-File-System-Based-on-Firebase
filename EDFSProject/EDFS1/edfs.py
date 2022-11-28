@@ -136,7 +136,10 @@ def ls(path):
             return {'success': "This directory is empty", 'data': ['This Directory is Empty']}
 
         for i in l:
-            print(i.replace("~", "."))
+            i = i.replace("~", ".")
+        for index in range(len(l)):
+            l[index] = l[index].replace("~", ".")
+        # print(l)
         return {'success': 'ls success', 'data': l}
 
     # 路径错误
@@ -380,7 +383,7 @@ def getPartitionLocations(filepath):
     pp = analysePath(path)
     if not pp['success']:
         print("ReadPartition ERROR:path wrong")
-        return {'success': ['Read Partition ERROR: Wrong path ' + path], 'data': 'Incorrect input'}
+        return {'success': ['Read Partition ERROR: Wrong path ' + path], 'data': ['Incorrect input']}
 
     else:
 
@@ -403,7 +406,7 @@ def getPartitionLocations(filepath):
             return {'success': ['Get Locations Success '], \
                     'data': a.keys()}
         else:
-            return {'success': ['Read Partition ERROR: Wrong path ' + path], 'data': 'Incorrect input'}
+            return {'success': ['Read Partition ERROR: Wrong path ' + path], 'data': ['Incorrect input']}
 
 
 
