@@ -230,7 +230,7 @@ class EDFSURL():
             partNum = key[1:]
             dataNode = value.replace(self.actualData, '').replace('.json', '')
             dataNodes.append(dataNode)
-            print('Get Locations: The %s part of the file is stored in datanode %s' % (partNum, dataNode))
+            # print('Get Locations: The %s part of the file is stored in datanode %s' % (partNum, dataNode))
         return {'success': ['Get Locations Success '], \
                     'data': dataNodes}
 
@@ -262,7 +262,7 @@ class EDFSURL():
         dataset = pd.DataFrame()
         actualPath = self.actualData + datanode + '.json'
         records = requests.get(actualPath).json()
-        print(records)
+        # print(records)
         for record in records:
             dataset = dataset.append(record, ignore_index=True)
         return dataset

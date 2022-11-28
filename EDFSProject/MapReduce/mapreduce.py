@@ -9,7 +9,7 @@ class MapReducer():
     def __init__(self):
         self.edfs2 = EDFSURL()
 
-    def searchMapper(self, filepaths, edfsType):
+    def searchMapper(self, filepaths, otherparam):
         # [{toyota.csv: df1},{toyota.csv: df2},{audi.csv: df3}]
         # 根据文件路径，获取分区数量
         # 大for循环
@@ -17,7 +17,10 @@ class MapReducer():
         # 对每个分区的处理
         # 结果[filename, value]保存到结果ans中
         ans = []
-        if edfsType == '2':
+        edfsType = int(otherparam['edfsType'])
+        price = int(otherparam['price'])
+        trans = otherparam['trans']
+        if edfsType == 2:
             for filepath in filepaths:
                 result = self.edfs2.getPartitionLocations(filepath)
                 fileName = filepath.split('/')[-1]
@@ -27,8 +30,8 @@ class MapReducer():
                         dataset = self.edfs2.getFilebyDatanode(datanode)
                         # 找出某个条件的数据行
                         # 数据行 存df
-                        searchedDf = dataset.loc[(dataset['price'] > 12000) \
-                                                 & (dataset['transmission'] == 'Manual')]
+                        searchedDf = dataset.loc[(dataset['price'] > price) \
+                                                 & (dataset['transmission'] == trans)]
                         if len(searchedDf.index) != 0:
                             ans.append({fileName: searchedDf})
             # print('ans\n', ans)
@@ -53,13 +56,13 @@ class MapReducer():
         for fileName, DFlist in tmpdataset.items():
             for partData in DFlist:
                 finalData[fileName] = pd.concat([finalData[fileName], partData], ignore_index=True)
-        # print('='*50)
-        # print(finalData)
+        print('='*50)
+        print(finalData)
         return finalData
 
 
 
 
 x = MapReducer()
-ans = x.searchMapper(['/test1/audi.csv', '/test1/toyota.csv'], '2')
+ans = x.searchMapper(['/test1/audi.csv', '/test1/toyota.csv'], {'edfsType': 2, 'price': 12000,'trans':'Manual'})
 x.searchReducer(ans)
