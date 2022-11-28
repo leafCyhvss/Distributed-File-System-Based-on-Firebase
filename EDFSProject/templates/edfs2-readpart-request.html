@@ -4,14 +4,19 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"> Find Partition Locations of A File </h3>
+                <h3 class="panel-title">EDFS2 Find Partition Locations of A File </h3>
             </div>
             <div class="panel-body">
                 <form method="post">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label>Please Input File Path and Partition Number, Separated with a comma</label>
-                        <input type="text" class="form-control" placeholder="syntax: /test1/xxx.csv,1" name="title"/>
+                        <label>Please Input File Path and Name:</label>
+                        <input type="text" class="form-control" placeholder="syntax: /test1/xxx.csv" name="filepath"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Partition Number:</label>
+                        <input type="text" class="form-control" placeholder="syntax: 5" name="pnumber"/>
                     </div>
                     <button type="submit" class="btn btn-primary">submit</button>
                     <a href="/edfs2" class="btn btn-primary" role="button">cancel</a>

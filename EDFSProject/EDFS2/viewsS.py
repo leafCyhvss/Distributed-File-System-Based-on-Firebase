@@ -10,7 +10,7 @@ edfs = EDFSURL()
 def helloworld(request):
     if request.method == 'GET':
         root = edfs.ls('/')['data']
-        return render(request, 'edfs2-ls.html', {'path': 'root (/)', 'queryset': root})
+        return render(request, 'edfs2-ls.html', {'msg': 'All path start with /', 'path': 'root (/)', 'queryset': root})
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
@@ -44,12 +44,18 @@ def catDisplay(request):
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
         # requestPath = requestPath if requestPath else '/'
-        result = edfs.cat(requestPath)
-        # print(filePaths)
-        print(result)
-        # pd.set_option('colheader_justify', 'center')
-        return render(request, 'edfs2-cat-result.html', \
-                      {'table': result.to_html(classes="table table-bordered table-hover")})
+        ans = edfs.cat(requestPath)
+        msg = ans['success']
+        if msg[0] == 'Cat Success':
+            result = ans['data']
+            # print(filePaths)
+            print(result)
+            # pd.set_option('colheader_justify', 'center')
+            return render(request, 'edfs2-cat-result.html', \
+                          {'msg': msg[0], 'table': result.to_html(classes="table table-bordered table-hover")})
+        else:
+            return render(request, 'edfs2-cat-result.html', \
+                          {'msg': msg[0], 'table': 'Incorrect input'})
 
 
 def showPartition(request):
@@ -127,19 +133,20 @@ def readPart(request):
         return render(request, 'edfs2-readpart-request.html')
     if request.method == 'POST':
         # edfs = EDFSURL()
-        requestPath = request.POST.get('title')
+        requestPath = request.POST.get('filepath')
         # requestPath = requestPath if requestPath else '/'
-        requestPath_list = requestPath.split(',')
-        if len(requestPath_list) != 2:
-            return render(request, 'edfs2-ls.html', {'msg': 'Read Part ERROR: Invalid input'})
-        result = edfs.readPartition(requestPath_list[0], int(requestPath_list[1]))
-        # print(filePaths)
-        print(result)
-        # pd.set_option('colheader_justify', 'center')
-        return render(request, 'edfs2-readpart-result.html', \
-                      {'table': result.to_html(classes="table table-bordered table-hover")})
+        pnumber = request.POST.get('pnumber')
 
-    return
+        ans = edfs.readPartition(requestPath, int(pnumber))
+        msg = ans['success']
+        result = ans['data']
+        if msg[0] == 'Read Partition Success':
+            # pd.set_option('colheader_justify', 'center')
+            return render(request, 'edfs2-readpart-result.html', \
+                          {'msg': msg[0], 'table': result.to_html(classes="table table-bordered table-hover")})
+        else:
+            return render(request, 'edfs2-cat-result.html', \
+                          {'msg': msg[0], 'table': 'Incorrect input'})
 
 
 def analytics(request):

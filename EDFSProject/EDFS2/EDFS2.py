@@ -140,30 +140,32 @@ class EDFSURL():
         dataset = pd.DataFrame()
         if '.' not in filePath:
             print('Cat ERROR: Wrong File Path' + filePath)
-            return ['Cat ERROR: Wrong File Path' + filePath]
+            return {'success': ['Cat ERROR: Wrong File Path' + filePath], 'data': 'Incorrect Input'}
         filePath = filePath.replace('.', '__')
         if not self.checkValidPath(filePath):
+            filePath = filePath.replace('__', '.')
             print('Cat ERROR: Wrong File Path' + filePath)
-            return ['Cat ERROR: Wrong File Path' + filePath]
+            return {'success': ['Cat ERROR: Wrong File Path' + filePath], 'data': 'Incorrect Input'}
         actualPaths = requests.get(self.rootPath[:-1] + filePath + '.json').json()
         for key, value in actualPaths.items():
             records = requests.get(value).json()
             # 这里的 records 是一个列表，列表里是字典
             for record in records:
                 dataset = dataset.append(record, ignore_index=True)
-        print(dataset.info())
-        return dataset
+        # print(dataset.info())
+        return {'success': ['Cat Success'], 'data': dataset}
 
 
     def get(self, filePath: str) -> pd.DataFrame:
         dataset = pd.DataFrame()
         if '.' not in filePath:
             print('Get File ERROR: Wrong File Path' + filePath)
-            return ['Get File ERROR: Wrong File Path' + filePath]
+            return ['Get File ERROR: Wrong File Path: ' + filePath]
         filePath = filePath.replace('.', '__')
         if not self.checkValidPath(filePath):
+            filePath = filePath.replace('__', '.')
             print('Get File ERROR: Wrong File Path' + filePath)
-            return ['Get File ERROR: Wrong File Path' + filePath]
+            return ['Get File ERROR: Wrong File Path: ' + filePath]
         actualPaths = requests.get(self.rootPath[:-1] + filePath + '.json').json()
         for key, value in actualPaths.items():
             records = requests.get(value).json()
@@ -237,23 +239,21 @@ class EDFSURL():
             filePath = filePath.replace('.', '__')
         else:
             print('Read Partition ERROR: Must read a file but not a directory')
-            return ['Read Partition ERROR: Must read a file but not a directory']
+            return {'success': ['Read Partition ERROR: Must read a file but not a directory'], 'data': 'Incorrect input'}
         if not self.checkValidPath(filePath):
             if '__' in filePath:
                 filePath = filePath.replace('__', '.')
             print('Read Partition ERROR: Wrong path ' + filePath)
-            return ['Read Partition ERROR: Wrong path ' + filePath]
+            return {'success': ['Read Partition ERROR: Wrong path ' + filePath], 'data': 'Incorrect input'}
 
         dataset = pd.DataFrame()
         actualPaths = requests.get(self.rootPath[:-1] + filePath + '.json').json()
         number = 'p' + str(partition)
         if number not in actualPaths.keys():
             print('Read Partition ERROR: Wrong partition number ' + str(partition))
-            return ['Read Partition ERROR: Wrong partition number ' + str(partition)]
+            return {'success': ['Read Partition ERROR: Wrong partition number ' + str(partition)], 'data': 'Incorrect input'}
         records = records = requests.get(actualPaths[number]).json()
         for record in records:
             dataset = dataset.append(record, ignore_index=True)
         print('Read Partition: The %s part of the file is:' % partition)
-        print(dataset.head())
-        print(dataset.info())
-        return dataset
+        return {'success': ['Read Partition Success'], 'data': dataset}

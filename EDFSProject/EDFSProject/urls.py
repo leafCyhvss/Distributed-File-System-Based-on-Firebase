@@ -27,15 +27,22 @@ urlpatterns = [
     path('edfs1/', viewsF.edfs1Main),
     # cmds
     path('edfs1/ls-request', viewsF.lsDisplay),
+    path('edfs1/part-request', viewsS.showPartition),
+    path('edfs1/mkdir', viewsF.mkdir),
+    path('edfs1/upload', viewsF.put),
+    path('edfs1/remove', viewsF.remove),
+    path('edfs1/cat', viewsF.catDisplay),
+    path('edfs1/read-part', viewsF.readPart),
 
     # search and analytics
+    path('edfs1/analytics.html', viewsF.analytics),
+    path('edfs1/report.html', viewsF.report),
 
     # EDFS2
     path('edfs2/', viewsS.helloworld),
     # cmds
     path('edfs2/ls-request', viewsS.lsDisplay),
     path('edfs2/part-request', viewsS.showPartition),
-    path('edfs2/readpart-request', viewsS.readPart),
     path('edfs2/mkdir', viewsS.mkdir),
     path('edfs2/upload', viewsS.put),
     path('edfs2/remove', viewsS.remove),

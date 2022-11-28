@@ -11,6 +11,7 @@ def edfs1Main(request):
     if request.method == 'GET':
         root = ['/']
         return render(request, 'edfs1-ls.html', {'queryset': root})
+    # render(request, 'edfs2-ls.html', {'msg': result[0], 'path': requestPath, 'queryset': filePaths}
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
