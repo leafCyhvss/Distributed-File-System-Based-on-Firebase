@@ -366,9 +366,15 @@ def put(path, fileName, k):
 # print(put("/user/ldw/", 'cars.csv',2))
 
 
-def readPartition(path, fileName):
-    if '.' not in path:
-        return {'success': ['Read Partition ERROR: Must read a file but not a directory'], 'data': 'Incorrect input'}
+def getPartitionLocations(filepath):
+    if filepath[-1] == '/':
+        filepath = filepath[:-1]
+    fileName = filepath.split('/')[-1]
+    print('fileName', fileName)
+    path = '/'.join(filepath.split('/')[:-1])
+    print('path', path)
+    # if '.' not in path:
+    #     return {'success': ['Read Partition ERROR: Must read a file but not a directory'], 'data': 'Incorrect input'}
 
     a = getData()
     pp = analysePath(path)
@@ -471,7 +477,13 @@ def rm(filepath):
 # print(rm("/user/ldw", 'copytoyota.csv'))
 
 
-def getPartitionLocations(path, fileName, k):
+def readPartition(filepath, k):
+    if filepath[-1] == '/':
+        filepath = filepath[:-1]
+    fileName = filepath.split('/')[-1]
+    print('fileName', fileName)
+    path = '/'.join(filepath.split('/')[:-1])
+    print('path', path)
     if path[0] != '/':
         return {'success': ['Get Locations ERROR: Syntax start with /'], \
                 'data': ['Incorrect Query']}
@@ -517,10 +529,12 @@ def getPartitionLocations(path, fileName, k):
                 return {'success': ['Get Locations ERROR: Wrong path ' + path], \
                         'data': ['Incorrect Query']}
             f = fb.get("data", path.replace('/', '-') + fileName.split(".")[0] + str(k))
+            dataset = pd.DataFrame()
             for i in f:
-                print(i)
+                #print(i)
+                dataset = dataset.append(i, ignore_index=True)
             return {'success': ['Get Locations Success '], \
-                    'data': f}
+                    'data': dataset}
 
         else:
             return {'success': ['Get Locations ERROR: Wrong path ' + path], \

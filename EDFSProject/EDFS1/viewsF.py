@@ -39,7 +39,7 @@ def lsDisplay(request):
 
 def catDisplay(request):
     if request.method == 'GET':
-        return render(request, 'edfs1-locpart-reuqest.html')
+        return render(request, 'edfs1-cat-request.html')
     if request.method == 'POST':
         # edfs = EDFSURL()
         requestPath = request.POST.get('title')
@@ -139,6 +139,7 @@ def readPart(request):
         ans = edfs.readPartition(requestPath, int(pnumber))
         msg = ans['success']
         result = ans['data']
+        print('msg', msg)
         if msg[0] == 'Read Partition Success':
             # pd.set_option('colheader_justify', 'center')
             return render(request, 'edfs1-readpart-result.html', \
