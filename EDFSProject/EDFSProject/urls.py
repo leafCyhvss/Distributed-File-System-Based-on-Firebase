@@ -27,7 +27,7 @@ urlpatterns = [
     path('edfs1/', viewsF.edfs1Main),
     # cmds
     path('edfs1/ls-request', viewsF.lsDisplay),
-    path('edfs1/part-request', viewsS.showPartition),
+    path('edfs1/part-request', viewsF.showPartition),
     path('edfs1/mkdir', viewsF.mkdir),
     path('edfs1/upload', viewsF.put),
     path('edfs1/remove', viewsF.remove),
