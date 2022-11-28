@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from EDFS2.EDFS2 import EDFSURL
+import pandas as pd
 from django.urls import reverse
 
 edfs = EDFSURL()
@@ -46,8 +47,9 @@ def catDisplay(request):
         result = edfs.cat(requestPath)
         # print(filePaths)
         print(result)
+        # pd.set_option('colheader_justify', 'center')
         result.to_html('./templates/catresult.html')
-        return render(request,'catresult.html')
+        return render(request, 'edfs2-cat-result.html', {'table':result.to_html()})
 
 
 def showPartition(request):
