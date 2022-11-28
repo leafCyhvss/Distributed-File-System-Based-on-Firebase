@@ -98,16 +98,6 @@ def put(request):
         files = edfs.ls(filePath)['data']
         return render(request, 'edfs2-ls.html', {'msg': result[0], 'path': filePath, 'queryset': files})
     # 考虑重定向去原来的页面，这样url会变
-
-
-def analytics(request):
-    return render(request, 'analytics.html')
-
-
-def report(request):
-    return render(request, 'report.html')
-
-
 def remove(request):
     if request.method == 'GET':
         return render(request, 'edfs2-remove-request.html')
@@ -129,3 +119,13 @@ def remove(request):
         print('file path: ', filePath)
         files = edfs.ls(filePath)['data']
         return render(request, 'edfs2-ls.html', {'msg': result[0], 'path': filePath, 'queryset': files})
+
+def readPart(request):
+    return
+def analytics(request):
+    return render(request, 'analytics.html')
+
+def report(request):
+    return render(request, 'report.html')
+
+

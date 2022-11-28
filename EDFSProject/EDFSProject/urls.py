@@ -39,6 +39,7 @@ urlpatterns = [
     path('edfs2/upload', viewsS.put),
     path('edfs2/remove', viewsS.remove),
     path('edfs2/cat', viewsS.catDisplay),
+    path('edfs2/read-part', viewsS.readPart),
 
     # search and analytics
     path('edfs2/analytics.html', viewsS.analytics),
