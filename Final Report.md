@@ -82,12 +82,16 @@ In addition, to configure python-firebaseSDK, we need to modify the toolkit sour
 
 ## **Learning Experience**
 
-Our team members who are responsible for this application are both familiar with Python and had some experience with HTML With the aid of Bootstrap, a framework of CSS.
-
-
+ Continuous data science and computer science education is necessary, especially where technology and interventions are fast changing. We were not familiar with Python syntax, front-end technology, and how to maintain the consistency of writing distributed files and directory files. In order to get useful information, we did research on Google and study it by ourselves. Besides, we also learned how to work with others on the project. 
 
 ## **Conclusion**
 
 After this project, we have deep learning about how to implement an emulation-based system for distributed file storage and parallel computation and how to deal with big data. We also learned more about the web development framework Django and gathered some hands-on experience with it. We now know how to set up a Django project with sub-projects, render pages with POST data (learned that one of the best ways is to use key-value pairs), how to redirect to another page, and how use Bootstrap with Django. Besides, we also learned how to do data analysis by using Python. 
 
 ## **Links**
+
+
+
+## Contributions
+
+![image-20221128224324153](./Final%20Report.assets/image-20221128224324153.png)
