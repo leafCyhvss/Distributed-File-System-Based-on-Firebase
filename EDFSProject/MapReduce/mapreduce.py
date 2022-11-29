@@ -95,9 +95,11 @@ class MapReducer():
             fig.savefig('./static/img/analyseResult.png')
         if method == 'method2':
             fig, ax = plt.subplots(1, 1)
+            df['price'] = pd.to_numeric(df['price'])
+            df['year'] = pd.to_numeric(df['year'])
             sns.relplot(x="year", y="price", hue="transmission", kind="scatter", data=df)
-            ax = sns.scatterplot(data=df, x="year", y="price", hue="transmission")
-            sns.regplot(data=df, x="year", y="price", scatter=False, ax=ax)
+            # ax = sns.scatterplot(data=df, x="year", y="price", hue="transmission")
+            # sns.regplot(data=df, x="year", y="price", scatter=False, ax=ax)
             plt.title("Depreciation of %s cars at different prices when selling" %(k.split('.')[0]))
             fig.savefig('./static/img/analyseResult.png')
 

@@ -1,12 +1,10 @@
 # Final Report
 
 Yucheng Yang 2333448896
-
 Junhui Yang 9165660545
-
 Carra Hamner 7561895800
 
-## Introduction
+## **Introduction**
 
 First, we will explain our original dataset, then followed by our project design which contains three parts: EDFS, Partition-based map and reduce(PMR) and App for searching and analyzing. In addition, we will talk about our prediction and analysis based on the data we use. Then we will discuss the learning experience. Last but not least, we will conclude our project.
 
@@ -30,35 +28,31 @@ We used the Django framework for the web browser-based application required for 
 
 EDFS1 and EDFS2 share the same HTML templates located in the templates folder. layout.html includes content in the static folder for styling and pictures. All other HTML templates except analytics.html and report.html for our analytics explanation and final report extend layout.html, making each EDFS project's HTML/CSS skeleton roughly the same. In viewS.py and viewF.py, we use x-request.html files to process GET requests from forms to gather data from each EDFS’s command, and x-result.html to process POST requests for results gathered for CAT, GetPartitionLocations, and ReadPartition. For the ls command, we used x-ls-post.html to handle the form. We render all other commands’ results with x-ls.html. POST data are sent via key-value pairs and rendered accordingly regarding their purposes. 
 
-## Analyze 
+## Analyze
 
 #### The annual transmission output of the three businesses and the overall number of used vehicles:
 
-<img src="D:\DSCI551-Project\Dsci551-project\Graphs\audi1.png" style="zoom: 67%;" />
+<img src="./Final%20Report.assets/13391669697059_.pic-9697115.jpg" alt="13391669697059_.pic" style="zoom: 67%;" />
 
-<img src="D:\DSCI551-Project\Dsci551-project\Graphs\ford1.png" alt="ford1" style="zoom: 67%;" />
+<img src="./Final%20Report.assets/13411669697060_.pic-9697160.jpg" alt="13411669697060_.pic" style="zoom: 67%;" />
 
-<img src="D:\DSCI551-Project\Dsci551-project\Graphs\toyota1.png" alt="toyota1" style="zoom: 67%;" />
+<img src="./Final%20Report.assets/13431669697061_.pic.jpg" alt="13431669697061_.pic" style="zoom: 67%;" />
 
 According to the three graphs above, the production of Audi's automated and semi-automated vehicles climbed dramatically in 2019 while the production of manual vehicles decreased. Toyota's manual vehicle production has been expanding year after year, and their auto cars are also being produced in large numbers, but their manual transmission is always at the top. Ford produces about 90% of its vehicles with a manual gearbox. Only 10% of Ford vehicles are equipped with gearboxes other than the manual. Ford and Toyota have shown little interest in semi-autonomous vehicles. Audi's Semi-Auto production has increased year after year, and in  2019 it surpassed the Manual Transmission.  Based on the foregoing, we believe that Audi outperforms Ford and Toyota in auto and semi auto transmission vehicles. On the other hand, Toyota and Ford are competing in the manual gearbox market. 
 
-#### The car's resale value differs from its  original retail price: 
+#### The car's resale value differs from its  original retail price:
 
 The market value has been calculated on this formula: Current market value = Release Price * (1 - depreciation rate) ^ (2022-release year).
 The depreciation rate for all cars and companies has been assumed as 12.5% every year.
 The 2022 minus release year is the current age of the car
 
-<img src="D:\DSCI551-Project\Dsci551-project\Graphs\audi2.png" style="zoom: 67%;" />
 
-<img src="D:\DSCI551-Project\Dsci551-project\Graphs\ford2.png" alt="ford2" style="zoom:67%;" />
-
-<img src="D:\DSCI551-Project\Dsci551-project\Graphs\toyota2.png" alt="toyota2" style="zoom:67%;" />
 
 According to the formula that was shown before, the link between pricing and current market value may be seen in the three graphs that have been presented above for Audi, Ford, and  Toyota. Based on the findings, we are able to draw the conclusion that there is a positively strong linear relationship between price and market value across all of the firms. This relationship indicates  that if a price is high, the pace at which its market value drops will be slower.
 
 ## **Learning Experience**
 
-Carra and Junhui wrote the Django application. Carra, who wrote another project in Django last summer, did not face major issues editing Python codes in Django. However, Carra and Junhui had no experience with Bootstrap before and had limited experience customizing appearances using HTML templates.  Carra and Junhu searched online, read posts in StackOverflow, tutorials in W3 School, documentation from Bootstrap official, and documentation for Django. Yucheng rarely uses Python. Yucheng learned how to write Python code from online resources and apply them to EDFS1. Besides, Yucheng also learned how to do data analyse as graphs output by himself.
+
 
 
 

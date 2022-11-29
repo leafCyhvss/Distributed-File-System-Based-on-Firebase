@@ -204,7 +204,7 @@ def analytics(request):
                         + fileName + ' cars.'
         if method == 'method2':
             msg = 'This picture shows :\n' \
-                  'depreciation of used cars at different prices when selling of ' \
+                  'the relationship of years and selling price of used cars for  ' \
                   + fileName + ' cars.'
         return render(request, 'analytics-result.html', {'msg': msg})
 
