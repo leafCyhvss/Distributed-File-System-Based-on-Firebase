@@ -44,13 +44,13 @@ In terms of coding, EDFS1 provides functions directly while EDFS2 wraps everythi
 
 ### **Part 2: Partition-based map and reduce **
 
-We combined partition-based map and reduce functions with search and analytics functions in part 3.
+We combined partition-based map and reduce functions with search and analytics functions in part 3. In the Map phase, the Map task can split values into key-value pairs which are partitioned and sorted. After getting data from the Map task, it merges the data into one single unit during the Merge phase. Then during Reduce phase, the reduce function is invoked for each key in the sorted output. The output of this phase is written directly to the output file system.  More details can be seen from video.
 
 ### **Part 3: App for searching and analyzing**
 
-We used the Django framework for the web browser-based application required for a three-person team. We decided to use it because it is the fastest framework for developing websites. In addition, it uses Python, HTML, and CSS for coding. Our team members who are responsible for this application are both familiar with Python and had some experience with HTML With the aid of Bootstrap, a framework of CSS, we only need to write Python codes and HTML templates, ensuring a quick development process. 
+We used the `Django` framework for the web browser-based application required for a three-person team as well as`Bootstrap` for the frontend of the website.
 
-EDFS1 and EDFS2 share the same HTML templates located in the templates folder. layout.html includes content in the static folder for styling and pictures. All other HTML templates except analytics.html and report.html for our analytics explanation and final report extend layout.html, making each EDFS project's HTML/CSS skeleton roughly the same. In viewS.py and viewF.py, we use x-request.html files to process GET requests from forms to gather data from each EDFS’s command, and x-result.html to process POST requests for results gathered for CAT, GetPartitionLocations, and ReadPartition. For the ls command, we used x-ls-post.html to handle the form. We render all other commands’ results with x-ls.html. POST data are sent via key-value pairs and rendered accordingly regarding their purposes. 
+EDFS1 and EDFS2 share the same HTML templates located in the templates folder. `layout.html` includes content in the static folder for head of every web page we write. EDFS1, EDFS2 and Mapreduce functions are located independantly in folders.  For model layer in `Django`, we use the EDFSs written in part one. For view layer in `Django`, `viewF.py` records all the response functions of all web pages related to EDFS1. And `viewS.py` records all the response functions of all web pages related to EDFS2 as well as search and analytics service.
 
 ## Analyze
 
@@ -66,18 +66,28 @@ According to the three graphs above, the production of Audi's automated and semi
 
 #### The used car price trend in recent years:
 
+<img src="./Final%20Report.assets/13471669697908_.pic.jpg" alt="13471669697908_.pic" style="zoom:67%;" />
+
+<img src="./Final%20Report.assets/13461669697908_.pic.jpg" alt="13461669697908_.pic" style="zoom:67%;" />
+
+<img src="./Final%20Report.assets/image-20221128220922796.png" alt="image-20221128220922796" style="zoom:67%;" />
+
 We will see that the company's prices have been increasing linearly or exponentially for all of  their used vehicles. The prices have climbed linearly every year at a positive rate for all three companies, as seen by  the red line in each of the three graphs that have been presented above. For Audi, the price rise  did not begin until after the year 2010, for Ford it was somewhere between 2007 and 2010,  while for Toyota, the price increase did not begin until after the year 2005. We believe this trends somehow reflect the trend of inflation.
+
+##  Pros and cons of 2 different methods
+
+Developing with Firebase SDK is easier and much more efficient. Data is packaged by the SDK and large amounts of data can be transferred in a single HTTP communication. However, when building EDFS with RESTFul queries to Firebase，every single json file requires a HTTP communication. When uploading a file, it often takes a lot of time to upload each line of data as a json to firebase using query.
+
+In addition, to configure python-firebaseSDK, we need to modify the toolkit source code. For example, we need to change the `async` package to `async_`, which is imported locally by firebase main program, to avoid system error.
 
 ## **Learning Experience**
 
-
+Our team members who are responsible for this application are both familiar with Python and had some experience with HTML With the aid of Bootstrap, a framework of CSS.
 
 
 
 ## **Conclusion**
 
 After this project, we have deep learning about how to implement an emulation-based system for distributed file storage and parallel computation and how to deal with big data. We also learned more about the web development framework Django and gathered some hands-on experience with it. We now know how to set up a Django project with sub-projects, render pages with POST data (learned that one of the best ways is to use key-value pairs), how to redirect to another page, and how use Bootstrap with Django. Besides, we also learned how to do data analysis by using Python. 
-
-
 
 ## **Links**
