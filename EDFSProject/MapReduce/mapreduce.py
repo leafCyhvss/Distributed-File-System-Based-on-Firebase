@@ -56,13 +56,13 @@ class MapReducer():
         for fileName, DFlist in tmpdataset.items():
             for partData in DFlist:
                 finalData[fileName] = pd.concat([finalData[fileName], partData], ignore_index=True)
-        print('='*50)
-        print(finalData)
+        # print('='*50)
+        # print(finalData)
         return finalData
 
 
 
 
-x = MapReducer()
-ans = x.searchMapper(['/test1/audi.csv', '/test1/toyota.csv'], {'edfsType': 2, 'price': 12000,'trans':'Manual'})
-x.searchReducer(ans)
+# x = MapReducer()
+# ans = x.searchMapper(['/test1/audi.csv', '/test1/toyota.csv'], {'edfsType': 2, 'price': 12000,'trans':'Manual'})
+# x.searchReducer(ans)

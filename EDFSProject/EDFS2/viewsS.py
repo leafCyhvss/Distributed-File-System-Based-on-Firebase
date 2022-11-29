@@ -153,17 +153,25 @@ def search(request):
     if request.method == 'GET':
         return render(request, 'search-request.html')
     if request.method == 'POST':
-        # edfs = EDFSURL()
-        filePath1 = request.POST.get('filepath')
-        # filePath2 = request.POST.get('filepath2')
-        # price = int(request.POST.get('price'))
-        trans = request.POST.get('trans')
-        trans2 = request.POST.get('trans2')
-        print(filePath1)
-        # print(filePath2)
-        # print(price)
-        print('Transmission', trans, '???', trans2)
-        return render(request, 'search-result.html')
+        MR = MapReducer()
+        otherParam = {}
+        filePath1 = request.POST.get('filepath1')
+        filePath2 = request.POST.get('filepath2')
+        filePaths = [filePath1, filePath2]
+        otherParam['price'] = int(request.POST.get('price'))
+        otherParam['trans'] = request.POST.get('trans')
+        otherParam['edfsType'] = int(request.POST.get('edfs'))
+        keyValuePair = MR.searchMapper(filePaths, otherParam)
+        searchedDataset = MR.searchReducer(keyValuePair)
+        kvPair = []
+        for dic in keyValuePair:
+            for k,v in dic.items():
+                v = v.to_html(classes="table table-bordered table-hover")
+                kvPair.append({k:v})
+        print(keyValuePair)
+        print("="*100)
+        print(searchedDataset)
+        return render(request, 'search-result.html',{'kvPair': kvPair})
 
 def analytics(request):
     return render(request, 'analytics.html')

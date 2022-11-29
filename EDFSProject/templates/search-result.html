@@ -7,14 +7,47 @@
                 <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                 Back
             </a>
+            <a class="btn btn-success" href="/search">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                New Search
+            </a>
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"> Cat File Result: </h3>
+                <h3 class="panel-title"> Map Reduce Process : </h3>
             </div>
-
             <div class="panel-body">
-                {{ table|safe }}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> Map Output : </h3>
+                    </div>
+                    <div class="panel-body">
+                        {% for obj in kvPair %}
+                            {% for k, v in obj.items %}
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"> {{ k }} </h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        {{ v|safe }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% empty %}
+                            No Qualified Data
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> Reduce Output : </h3>
+                    </div>
+                    <div class="panel-body">
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
