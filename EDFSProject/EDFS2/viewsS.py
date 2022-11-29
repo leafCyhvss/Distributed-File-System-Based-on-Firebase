@@ -162,6 +162,7 @@ def search(request):
         otherParam['trans'] = request.POST.get('trans')
         otherParam['edfsType'] = int(request.POST.get('edfs'))
         keyValuePair = MR.searchMapper(filePaths, otherParam)
+        print(type(keyValuePair))
         searchedDataset = MR.searchReducer(keyValuePair)
         kvPair = []
         import collections
@@ -190,7 +191,22 @@ def analytics(request):
     if request.method == 'GET':
         return render(request, 'analytics-request.html')
     if request.method == 'POST':
-        return render(request, 'analytics-result.html')
+        MR = MapReducer()
+        filePath = request.POST.get('filepath')
+        method = request.POST.get('method')
+        print(filePath, method)
+        fileName = filePath.split('/')[-1].split('.')[0]
+        kvPair = MR.analyseMapper(filePath)
+        MR.analyseReducer(kvPair, method)
+        if method == 'method1':
+            msg = 'This picture shows :\n' \
+                  'distribution of used cars according to time and transmission of ' \
+                        + fileName + ' cars.'
+        if method == 'method2':
+            msg = 'This picture shows :\n' \
+                  'depreciation of used cars at different prices when selling of ' \
+                  + fileName + ' cars.'
+        return render(request, 'analytics-result.html', {'msg': msg})
 
 
 def report(request):

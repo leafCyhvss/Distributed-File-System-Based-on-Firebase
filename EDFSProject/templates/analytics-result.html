@@ -4,21 +4,24 @@
 {% block content %}
     <div class="container">
         <div style="margin-bottom: 10px">
-            <a class="btn btn-success" href="/edfs1">
+            <a class="btn btn-success" href="/">
                 <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                 Back
             </a>
-            <a class="btn btn-success" href="/edfs1/cat">
+            <a class="btn btn-success" href="/analytics">
                 <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                New Cat Query
+                New Analytics
             </a>
         </div>
         <div class="panel panel-danger">
             <div class="panel-heading">
-                <h3 class="panel-title">EDFS1 System Message:</h3>
+                <h3 class="panel-title">System Message:</h3>
             </div>
             <div class="panel-body" aria-placeholder="No Message">
                 {{ msg }}
+                <br>
+                <br>
+                A more detailed explanation will be shown in the report.
             </div>
         </div>
         <div class="panel panel-default">
@@ -29,7 +32,7 @@
             <div class="panel-body">
                 <img class="img-thumbnail"
                      alt="400x400"
-                     src="{% static 'img/placeholder.jpg'%}"
+                     src="{% static 'img/analyseResult.png'%}"
                      data-holder-rendered="true"
                      style="width: 400px;
                      height: 400px;">

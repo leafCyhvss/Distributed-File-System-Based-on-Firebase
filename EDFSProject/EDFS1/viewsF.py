@@ -10,7 +10,7 @@ def helloworld(request):
 def edfs1Main(request):
     if request.method == 'GET':
         root = edfs.ls('/user')['data']
-        return render(request, 'edfs1-ls.html', {'msg': 'All path start with /', 'path': 'root (/)', 'queryset': root})
+        return render(request, 'edfs1-ls.html', {'msg': 'All path start with /', 'path': '/user', 'queryset': root})
     # render(request, 'edfs2-ls.html', {'msg': result[0], 'path': requestPath, 'queryset': filePaths}
     if request.method == 'POST':
         # edfs = EDFSURL()
@@ -148,8 +148,3 @@ def readPart(request):
             return render(request, 'edfs1-cat-result.html', \
                           {'msg': msg[0], 'table': result.to_html(classes="table table-bordered table-hover")})
 
-def analytics(request):
-    return render(request, 'analytics-request.html')
-
-def report(request):
-    return render(request, 'report.html')

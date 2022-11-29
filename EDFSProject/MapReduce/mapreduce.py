@@ -40,15 +40,22 @@ class MapReducer():
                             ans.append({fileName: searchedDf})
             # print('ans\n', ans)
             return ans
-        if edfsType == '1':
-            pass
+        if edfsType == 1:
+            data1 = edfs.cat(filepaths[0])['data']
+            data1['price'] = pd.to_numeric(data1['price'])
+            data1 = data1.loc[(data1['price'] > price) \
+                                                 & (data1['transmission'] == trans)]
+            data2 = edfs.cat(filepaths[1])['data']
+            # data2['price'] = data2['price'].astype(int, errors="ignore")
+            data2['price'] = pd.to_numeric(data2['price'])
+            data2 = data2.loc[(data2['price'] > price) \
+                                                 & (data2['transmission'] == trans)]
+            return [{filepaths[0].split('/')[-1]:data1}, {filepaths[1].split('/')[-1]:data2}]
+
 
     def searchReducer(self, keyValuePair):
         '''
-        # key
-        # DF=df1+df2+
-        # return DF# analyse#     9 3*3#     ford to 2*1
-        :param keyValuePair:
+        :param keyValuePair: [k,v] result introduced in lecture
         :return:
         '''
         import collections
@@ -71,23 +78,28 @@ class MapReducer():
             for k,v in dic.items():
                 dataset = pd.concat([dataset, v], ignore_index=True)
         #print(dataset)
-        dataset.to_csv('../localData/output.csv')
+        dataset.to_csv('./localData/output.csv')
         #k.split('.')[0]
-        df = pd.read_csv('../localData/output.csv')
-        print(df['year'].corr(df['price']))
-        print(df.shape)
-        df['year'].value_counts()
-        df["age"] = 2022 - df['year']
-        df["Current Value"] = df['price'] * (0.875) ** df["age"]
-        audi = df.drop(df[(df['year'] < 2002) | (df['year'] > 2019) | (df['Current Value'] < 0)].index)
-        fig, ax = plt.subplots(1, 1)
-        sns.countplot(y='year', data=df, order=df['year'].value_counts()[0:10].index,
-                      hue='transmission').tick_params(axis='x', rotation=90)
-        plt.title("%s car production from 2017-2009 based on transmisson wise"%(k.split('.')[0]))
-        fig.savefig('../static/img/analyseResult.png')
-        sns.relplot(x="year", y="price", hue="transmission", kind="scatter", data=df)
-        ax = sns.scatterplot(data=df, x="year", y="price", hue="transmission")
-        sns.regplot(data=df, x="year", y="price", scatter=False, ax=ax)
+        df = pd.read_csv('./localData/output.csv')
+        # print(df['year'].corr(df['price']))
+        # print(df.shape)
+        if method == 'method1':
+            df['year'].value_counts()
+            df["age"] = 2022 - df['year']
+            df["Current Value"] = df['price'] * (0.875) ** df["age"]
+            audi = df.drop(df[(df['year'] < 2002) | (df['year'] > 2019) | (df['Current Value'] < 0)].index)
+            fig, ax = plt.subplots(1, 1)
+            sns.countplot(y='year', data=df, order=df['year'].value_counts()[0:10].index,
+                          hue='transmission').tick_params(axis='x', rotation=90)
+            plt.title("%s car production from 2017-2009 based on transmisson wise"%(k.split('.')[0]))
+            fig.savefig('./static/img/analyseResult.png')
+        if method == 'method2':
+            fig, ax = plt.subplots(1, 1)
+            sns.relplot(x="year", y="price", hue="transmission", kind="scatter", data=df)
+            ax = sns.scatterplot(data=df, x="year", y="price", hue="transmission")
+            sns.regplot(data=df, x="year", y="price", scatter=False, ax=ax)
+            plt.title("Depreciation of %s cars at different prices when selling" %(k.split('.')[0]))
+            fig.savefig('./static/img/analyseResult.png')
 
     # def analyseMapper(self, filepath, method):
     #     url = 'https://demo01-76e03-default-rtdb.firebaseio.com/'
@@ -108,21 +120,21 @@ class MapReducer():
         if filepath[-1] == '/':
             filepath = filepath[:-1]
         fileName = filepath.split('/')[-1]
-        print('folder', fileName)
+        # print('folder', fileName)
         path = '/'.join(filepath.split('/')[:-1])
-        print('path', path)
+        # print('path', path)
         dataset = pd.DataFrame()
         data = edfs.cat(filepath)['data']
-        print(type(data))
+        # print(type(data))
         # print(data)
         # for data_ in data:
         #     dataset = dataset.append(data_, ignore_index=True)
-        print(type(dataset))
-        print(data.info())
+        # print(type(dataset))
+        # print(data.info())
         return [{fileName: data}]
 
-x = MapReducer()
-ans = x.searchMapper(['/test1/audi.csv'], {'edfsType': 2, 'price': 17000,'trans':'Manual'})
-# x.analyseReducer(ans, 123)
-y = x.analyseMapper('/user/yyy/audi.csv')
-x.analyseReducer(y, 123)
+# x = MapReducer()
+# ans = x.searchMapper(['/test1/audi.csv'], {'edfsType': 2, 'price': 17000,'trans':'Manual'})
+# # x.analyseReducer(ans, 123)
+# y = x.analyseMapper('/user/yyy/audi.csv')
+# x.analyseReducer(y, 123)
