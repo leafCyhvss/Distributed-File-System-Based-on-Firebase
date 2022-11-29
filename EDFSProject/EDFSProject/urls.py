@@ -35,7 +35,7 @@ urlpatterns = [
     path('edfs1/read-part', viewsF.readPart),
 
     # search and analytics
-    path('edfs1/analytics.html', viewsF.analytics),
+    path('edfs1/analytics-request.html', viewsF.analytics),
     path('edfs1/report.html', viewsF.report),
 
     # EDFS2

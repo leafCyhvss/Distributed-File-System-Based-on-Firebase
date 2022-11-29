@@ -149,7 +149,7 @@ def readPart(request):
                           {'msg': msg[0], 'table': result.to_html(classes="table table-bordered table-hover")})
 
 def analytics(request):
-    return render(request, 'analytics.html')
+    return render(request, 'analytics-request.html')
 
 def report(request):
     return render(request, 'report.html')

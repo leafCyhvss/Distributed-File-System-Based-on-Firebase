@@ -39,16 +39,30 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-body">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"> Reduce Output : </h3>
-                    </div>
-                    <div class="panel-body">
-
-                    </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> Reduce Output : </h3>
+                </div>
+                <div class="panel-body">
+                    {% for obj2 in result %}
+                        {% for k2, v2 in obj2.items %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> {{ k2 }} </h4>
+                                </div>
+                                <div class="panel-body">
+                                    {{ v2|safe }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% empty %}
+                        No Qualified Data
+                    {% endfor %}
                 </div>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}

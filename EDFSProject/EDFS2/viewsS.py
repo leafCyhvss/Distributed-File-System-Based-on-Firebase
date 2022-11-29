@@ -164,17 +164,33 @@ def search(request):
         keyValuePair = MR.searchMapper(filePaths, otherParam)
         searchedDataset = MR.searchReducer(keyValuePair)
         kvPair = []
+        import collections
+        tmpdataset = collections.defaultdict(lambda: [])
         for dic in keyValuePair:
-            for k,v in dic.items():
+            fileName = list(dic.keys())[0]
+            tmpdataset[fileName].append(list(dic.values())[0])
+
+        for fileName,datalist in tmpdataset.items():
+            for i,v in enumerate(datalist):
                 v = v.to_html(classes="table table-bordered table-hover")
+                k ='Search Result of File %s Partiton %s  is :'%(fileName, str(i+1))
                 kvPair.append({k:v})
-        print(keyValuePair)
-        print("="*100)
+        # print(keyValuePair)
+        # print("="*100)
         print(searchedDataset)
-        return render(request, 'search-result.html',{'kvPair': kvPair})
+        kvPair2 = []
+        for filename, df in searchedDataset.items():
+            df = df.to_html(classes="table table-bordered table-hover")
+            kvPair2.append({filename: df})
+        print("=" * 100)
+        print(kvPair2)
+        return render(request, 'search-result.html',{'kvPair': kvPair, 'result': kvPair2})
 
 def analytics(request):
-    return render(request, 'analytics.html')
+    if request.method == 'GET':
+        return render(request, 'analytics-request.html')
+    if request.method == 'POST':
+        return render(request, 'analytics-result.html')
 
 
 def report(request):
