@@ -194,9 +194,10 @@ def analytics(request):
         MR = MapReducer()
         filePath = request.POST.get('filepath')
         method = request.POST.get('method')
+        edfsType = int(request.POST.get('edfs'))
         print(filePath, method)
         fileName = filePath.split('/')[-1].split('.')[0]
-        kvPair = MR.analyseMapper(filePath)
+        kvPair = MR.analyseMapper(filePath, edfsType)
         MR.analyseReducer(kvPair, method)
         if method == 'method1':
             msg = 'This picture shows :\n' \

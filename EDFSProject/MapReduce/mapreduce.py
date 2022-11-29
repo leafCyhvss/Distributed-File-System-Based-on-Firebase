@@ -14,12 +14,6 @@ class MapReducer():
         self.edfs2 = EDFSURL()
 
     def searchMapper(self, filepaths, otherparam):
-        # [{toyota.csv: df1},{toyota.csv: df2},{audi.csv: df3}]
-        # 根据文件路径，获取分区数量
-        # 大for循环
-        # 对每个分区的文件分别下载
-        # 对每个分区的处理
-        # 结果[filename, value]保存到结果ans中
         ans = []
         edfsType = int(otherparam['edfsType'])
         price = int(otherparam['price'])
@@ -32,8 +26,6 @@ class MapReducer():
                 if result['success'] == ['Get Locations Success ']:
                     for datanode in (result['data']):
                         dataset = self.edfs2.getFilebyDatanode(datanode)
-                        # 找出某个条件的数据行
-                        # 数据行 存df
                         searchedDf = dataset.loc[(dataset['price'] > price) \
                                                  & (dataset['transmission'] == trans)]
                         if len(searchedDf.index) != 0:
@@ -87,7 +79,7 @@ class MapReducer():
             df['year'].value_counts()
             df["age"] = 2022 - df['year']
             df["Current Value"] = df['price'] * (0.875) ** df["age"]
-            audi = df.drop(df[(df['year'] < 2002) | (df['year'] > 2019) | (df['Current Value'] < 0)].index)
+            df = df.drop(df[(df['year'] < 2002) | (df['year'] > 2019) | (df['Current Value'] < 0)].index)
             fig, ax = plt.subplots(1, 1)
             sns.countplot(y='year', data=df, order=df['year'].value_counts()[0:10].index,
                           hue='transmission').tick_params(axis='x', rotation=90)
@@ -97,11 +89,10 @@ class MapReducer():
             fig, ax = plt.subplots(1, 1)
             df['price'] = pd.to_numeric(df['price'])
             df['year'] = pd.to_numeric(df['year'])
-            sns.relplot(x="year", y="price", hue="transmission", kind="scatter", data=df)
-            # ax = sns.scatterplot(data=df, x="year", y="price", hue="transmission")
-            # sns.regplot(data=df, x="year", y="price", scatter=False, ax=ax)
-            plt.title("Depreciation of %s cars at different prices when selling" %(k.split('.')[0]))
-            fig.savefig('./static/img/analyseResult.png')
+            sns_plot = sns.lmplot(data=df, x="year", y="price", line_kws={'color': 'red'}, scatter=True)
+            plt.ylim(0)
+            plt.title("%s car selling price according to years" % (k.split('.')[0]))
+            sns_plot.savefig('./static/img/analyseResult.png')
 
     # def analyseMapper(self, filepath, method):
     #     url = 'https://demo01-76e03-default-rtdb.firebaseio.com/'
@@ -118,22 +109,23 @@ class MapReducer():
     #         print(i)
     #     dataset = dataset.append(i, ignore_index=True)
     #     print(dataset)
-    def analyseMapper(self, filepath):
-        if filepath[-1] == '/':
-            filepath = filepath[:-1]
-        fileName = filepath.split('/')[-1]
-        # print('folder', fileName)
-        path = '/'.join(filepath.split('/')[:-1])
-        # print('path', path)
+    def analyseMapper(self, filepath, edfsType):
         dataset = pd.DataFrame()
-        data = edfs.cat(filepath)['data']
-        # print(type(data))
-        # print(data)
-        # for data_ in data:
-        #     dataset = dataset.append(data_, ignore_index=True)
-        # print(type(dataset))
-        # print(data.info())
-        return [{fileName: data}]
+        if edfsType == 1:
+            if filepath[-1] == '/':
+                filepath = filepath[:-1]
+            fileName = filepath.split('/')[-1]
+            # path = '/'.join(filepath.split('/')[:-1])
+            data = edfs.cat(filepath)['data']
+            return [{fileName: data}]
+        if edfsType == 2:
+            fileName = filepath.split('/')[-1]
+            result = self.edfs2.getPartitionLocations(filepath)
+            for datanode in (result['data']):
+                dataset = pd.concat([dataset, self.edfs2.getFilebyDatanode(datanode)])
+            return [{fileName: dataset}]
+
+
 
 # x = MapReducer()
 # ans = x.searchMapper(['/test1/audi.csv'], {'edfsType': 2, 'price': 17000,'trans':'Manual'})

@@ -6,21 +6,45 @@ Carra Hamner 7561895800
 
 ## **Introduction**
 
-First, we will explain our original dataset, then followed by our project design which contains three parts: EDFS, Partition-based map and reduce(PMR) and App for searching and analyzing. In addition, we will talk about our prediction and analysis based on the data we use. Then we will discuss the learning experience. Last but not least, we will conclude our project.
+With the drastic changes in the economic situation in recent years, the selling price of used cars has become more variable. In this project, by building the distributed file system and implementing the Mapreduce algorithm, we analyzed the prices of Ford, Audi and Toyota used cars in the market in recent years and the related factors affecting their prices.
+
+First of all, we build two independant emulated distributed file systems (EDFS). Both EDFS is base on Firebase remote nosql database. However, EDFS1 is implemented with Firebase’s Python SDK, i.e. `python-firebase` package,  while EDFS2 is built with RESTFul query directly to the online database.
+
+Second, we implemented the map reduce algorithm according to the principles discussed in class. We designed several `mapper` and `reducer` which will contribute to commiting search and analytics functions on our EDFSs.
+
+Last,  based on the characteristics of the data set, we analyzed the relationship between some factors and the selling prices of Ford, Audi and Toyota in the second-hand car market, and drew pictures to show the analysis results.
 
 ## **Explanations of Our Original Dataset**
 
-We choose the UK used car dataset from Kaggle in order to analyze the used car price trend and the production of used cars. To achieve that, we have three CSV datasets, Audi, Ford, and Toyota. Each of them contains nine columns: 1. Model, 2. Year, 3. Price, 4. Transmission, 5. Mileage, 6. FuelType, 7. Tax, 8. mpg, and 9. Engine size. And there are about 10,000 records in each CSV file.
+These three dataset, i.e. `ford.csv`, `audi.csv`, and `toyota.csv`, are representing UK used car’ selling price in recent years and the characteristics of the cars themselves. Each of the dataset contains nine columns: 
+
+1. Model: the car model of different brands of cars
+2. Year: the selling time of the used cars
+3. Price: the selling price of the used cars
+4. Transmission: Auto, Semi-Auto, Manual or other
+5. Mileage: the number of miles covered by the vehicle
+6. FuelType: Petrol or diesel or other
+7. Tax: Tax of selling deals
+8. mpg: Miles per gallon
+9. Engine size: Size of the engine
+
+ And there are about 10,000 records in each CSV file.
 
 ## **Project design**
 
 ### **Part 1: EDFS**
 
-For Building an emulated distributed file system (EDFS), we use Firebase-based emulation to store JSON files. The database stores the actual data of the file as a data node, while the database stores the metadata as a name node. The EDFSs fully support the commands which are listed in the project guideline. By implementing two EDFSs, Junhui and Yucheng choose different approaches to connect to firebase: SDK and query. EDFS Project folder specifies the project configuration of the project. The project includes two different sub-projects, EDFS1 and EDFS2. Each of the EDFS folders functions as smaller projects including EDFS implementations with the aid of the EDFS Project. 
+For building an emulated distributed file system (EDFS), we use Firebase-based emulation to store csv files as json. Type of files stored in the file system is limited to `CSV` files only. EDFS1, as shown in the project codes, is implemented on `python-firebase` SDK. This method can interact with remote servers quickly and efficiently. EDFS2 communicates with the remote Firebase server with direct RESTFul queries, just as the same as the queries introduced in the lectures before the first midterm. The advantages and disadvantages of using both approaches will be discussed in a later section.
+
+Apart from storing the actual data from csv files into Firebase, both EDFS store the metadata about the file system, which contains the implicit relationship between files and Datanodes.
+
+The EDFSs fully support the commands listed in the project guideline. EDFS2 supports user to navigate starting from the root of file system `/`. And EDFS1 only supports users to travel from level 1 directories under the root directory to the deeper directories. All of the paths begins with a `/` in both EDFSs.
+
+In terms of coding, EDFS1 provides functions directly while EDFS2 wraps everything into a python class `EDFSURL`.
 
 ### **Part 2: Partition-based map and reduce **
 
-For implementing map-reduce on data stores on EDFS, Junhui performed the map and reduce function by himself. Junhui implemented search, map, reduce and analytic functions and Yucheng implemented analytic functions. These functions are built for Part 3 which is searching and analyzing in application development. 
+We combined partition-based map and reduce functions with search and analytics functions in part 3.
 
 ### **Part 3: App for searching and analyzing**
 
